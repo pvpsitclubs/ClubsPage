@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Coverflow Carousel & Clubs</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #0f0f0f;
+            color: #fff;
+        }
+
+        /* --- Section 1: Coverflow Carousel --- */
+        .header-image {
+            width: 100%;
+            height: 22vh;
+        }
+
+        .section {
+            height: 78vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0f0f0f 100%);
+            overflow: hidden;
+        }
+
+        .coverflow-wrapper {
+            width: 90%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .coverflow-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1200px;
+            position: relative;
+        }
+
+        .coverflow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform-style: preserve-3d;
+            position: relative;
+            width: 100%;
+            height: 400px;
+        }
+
+        .coverflow-item {
+            position: absolute;
+            width: 500px;
+            height: 400px;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .coverflow-item .cover {
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            background: #333;
+        }
+
+        .coverflow-item .cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .reflection {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            transform: scaleY(-1);
+            background-size: cover;
+            background-position: center;
+        }
+
+        .coverflow-item.active { z-index: 100; }
+        .coverflow-item.active .cover { box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9); }
+
+        .nav-button {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.1); border: 2px solid rgba(255, 255, 255, 0.2);
+            color: white; width: 60px; height: 60px; border-radius: 50%; cursor: pointer;
+            font-size: 24px; display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s ease; backdrop-filter: blur(10px); z-index: 200;
+        }
+
+        .nav-button:hover { background: rgba(255, 255, 255, 0.2); transform: translateY(-50%) scale(1.1); }
+        .nav-button.prev { left: 50px; }
+        .nav-button.next { right: 50px; }
+
+        .dots-container {
+            position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%);
+            display: flex; gap: 10px; z-index: 200;
+        }
+
+        .dot {
+            width: 10px; height: 10px; border-radius: 50%; background: rgba(255, 255, 255, 0.3);
+            cursor: pointer; transition: all 0.3s ease;
+        }
+        .dot.active { background: rgba(255, 255, 255, 0.8); transform: scale(1.3); }
+
+        .info {
+            position: absolute; top: 60px; left: 50%; transform: translateX(-50%);
+            color: white; text-align: center; z-index: 200; width: 90%;
+        }
+
+        .info h2 { font-size: 32px; margin-bottom: 10px; opacity: 0; animation: fadeIn 0.6s forwards; }
+        .info p { font-size: 16px; margin-bottom: 10px; opacity: 0; animation: fadeIn 0.6s forwards 0.2s; }
+        @keyframes fadeIn { to { opacity: 1; } }
+
+        .play-pause-button {
+            position: absolute; bottom: 120px; left: 50%; transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.1); border: 2px solid rgba(255, 255, 255, 0.2);
+            color: white; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; font-size: 20px;
+            display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;
+            backdrop-filter: blur(10px); z-index: 200;
+        }
+        .play-pause-button:hover { background: rgba(255, 255, 255, 0.2); transform: translateX(-50%) scale(1.1); }
+        .play-pause-button .pause-icon { font-size: 16px; letter-spacing: 2px; }
+
+        /* --- Section 2: Clubs Grid (Custom CSS) --- */
+        .cards-section {
+            padding: 80px 20px;
+            background: #f4f7fa;
+        }
+        .cards-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto 50px auto;
+            text-align: center;
+        }
+        .cards-header-text { flex-grow: 1; }
+        .gradient-text {
+            background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        .cards-header p {
+            font-size: clamp(1.1rem, 2vw, 1.5rem);
+            color: #555;
+        }
+        .person-image {
+            width: 150px;
+            height: auto;
+            animation: floating 3s ease-in-out infinite;
+        }
+        @keyframes floating {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .club-card {
+            aspect-ratio: 5 / 4;
+            border-radius: 15px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+            padding: 20px;
+            box-shadow: 3 10px 20px rgba(202, 214, 170, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .club-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        .club-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%);
+        }
+        .card-content { position: relative; z-index: 2; }
+        .club-title {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .coverflow-item { width: 220px; height: 180px; }
+            .coverflow { height: 300px; }
+            .nav-button { width: 45px; height: 45px; font-size: 20px; }
+            .nav-button.prev { left: 15px; }
+            .nav-button.next { right: 15px; }
+            .info h2 { font-size: 24px; }
+            .info p { font-size: 14px; }
+            .person-image { display: none; }
+            .cards-section { padding: 50px 15px; }
+        }
+    </style>
+</head>
+<body>
+    
+    <img src="/images/head1.jpg" class="header-image" alt="Header">
+    
+    <!-- Section 1: Coverflow Carousel -->
+    <section id="home" class="section">
+        <div class="coverflow-wrapper">
+            <div class="info">
+                <h2 id="current-title"></h2>
+                <p id="current-description"></p>
+            </div>
+
+            <div class="coverflow-container" tabindex="0">
+                <div class="coverflow" id="coverflow">
+                    <div class="coverflow-item" data-index="0">
+                        <div class="cover"><a href="https://aiclubpvpsit.github.io/AI-Club/" target="_blank"><img src="/images/AiCoding.png" alt="AI Club" loading="lazy"></a></div>
+                        <div class="reflection"></div>
+                    </div>
+                    <div class="coverflow-item" data-index="1">
+                        <div class="cover"><a href="https://aiclubpvpsit.github.io/Coding-Club/" target="_blank"><img src="/images/Coding.jpg" alt="Coding Club" loading="lazy"></a></div>
+                        <div class="reflection"></div>
+                    </div>
+                    <div class="coverflow-item" data-index="2">
+                        <div class="cover"><a href="https://aiclubpvpsit.github.io/Content-Creation/" target="_blank"><img src="/images/content.png" alt="Content Creation" loading="lazy"></a></div>
+                        <div class="reflection"></div>
+                    </div>
+                    <div class="coverflow-item" data-index="3">
+                        <div class="cover"><a href="https://aiclubpvpsit.github.io/Cultural-Club/" target="_blank"><img src="/images/Cultural.png" alt="Cultural Club" loading="lazy"></a></div>
+                        <div class="reflection"></div>
+                    </div>
+                    <div class="coverflow-item" data-index="4">
+                        <div class="cover"><a href="https://aiclubpvpsit.github.io/Hackathon-Club/" target="_blank"><img src="/images/hackthon.png" alt="Hackathon Club" loading="lazy"></a></div>
+                        <div class="reflection"></div>
+                    </div>
+                    <div class="coverflow-item" data-index="5">
+                        <div class="cover"><a href="https://aiclubpvpsit.github.io/Sports-Club/" target="_blank"><img src="/images/Sports.png" alt="Sports Club" loading="lazy"></a></div>
+                        <div class="reflection"></div>
+                    </div>
+                </div>
+                
+                <button class="nav-button prev" onclick="navigate(-1)">‹</button>
+                <button class="nav-button next" onclick="navigate(1)">›</button>
+
+                <div class="dots-container" id="dots"></div>
+                
+                <button class="play-pause-button" id="playPauseBtn" onclick="toggleAutoplay()">
+                    <span class="play-icon">▶</span>
+                    <span class="pause-icon" style="display: none;">❚❚</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Clubs Grid -->
+    <section class="cards-section" id="clubs">
+        <div class="cards-header">
+            <img class="person-image" src="/images/person2.png" alt="Person 2" style="animation-delay: -1.5s;" />
+            <div class="cards-header-text">
+                <h2 class="gradient-text">Explore Our Clubs</h2>
+                <p>Find your perfect community</p>
+            </div>
+            <img class="person-image" src="/images/person1.png" alt="Person 1" style="animation-delay: -0.5s;" />
+        </div>
+        
+        <div class="cards-container">
+            <a href="https://aiclubpvpsit.github.io/AI-Club/" target="_blank">
+            <div class="club-card" style="background-image: url('/images/AiCoding.png');">
+                <div class="card-content"><h2 class="club-title">AI Club</h2></div>
+            </div>
+            </a>
+            <a href="https://aiclubpvpsit.github.io/Cultural-Club/" target="_blank">
+            <div class="club-card" style="background-image: url('/images/Cultural.png');">
+                <div class="card-content"><h2 class="club-title">Cultural Club</h2></div>
+            </div>
+            </a>
+            <a href="https://aiclubpvpsit.github.io/Sports-Club/" target="_blank">
+                <div class="club-card" style="background-image: url('/images/Sports.png');">
+                    <div class="card-content"><h2 class="club-title">Sports Club</h2></div>
+                </div>
+            </a>
+            <a href="https://aiclubpvpsit.github.io/Hackathon-Club/" target="_blank">
+                <div class="club-card" style="background-image: url('/images/hackthon.png');">
+                    <div class="card-content"><h2 class="club-title">Hackathon Club</h2></div>
+                </div>
+            </a>
+            <a href="https://aiclubpvpsit.github.io/Coding-Club/" target="_blank">
+            <div class="club-card" style="background-image: url('/images/Coding.jpg');">
+                <div class="card-content"><h2 class="club-title">Coding Club</h2></div>
+            </div>
+            </a>
+            <a href="https://aiclubpvpsit.github.io/Content-Creation/" target="_blank">
+            <div class="club-card" style="background-image: url('/images/content.png');">
+                <div class="card-content"><h2 class="club-title">Content Creation</h2></div>
+            </div>
+            </a>
+        </div>
+    </section>
+
+<script>
+    const items = document.querySelectorAll('.coverflow-item');
+    const dotsContainer = document.getElementById('dots');
+    const currentTitle = document.getElementById('current-title');
+    const currentDescription = document.getElementById('current-description');
+    const container = document.querySelector('.coverflow-container');
+    let currentIndex = Math.floor(items.length / 2);
+    let isAnimating = false;
+
+    const imageData = [
+        { title: "AI Club", description: "Exploring the frontiers of artificial intelligence" },
+        { title: "Coding Club", description: "Building the future, one line of code at a time" },
+        { title: "Content Creation", description: "Telling stories through digital media" },
+        { title: "Cultural Club", description: "Celebrating diversity and artistic expression" },
+        { title: "Hackathon Club", description: "Innovating under pressure and building great things" },
+        { title: "Sports Club", description: "Promoting teamwork and physical excellence" }
+    ];
+
+    items.forEach((_, index) => {
+        const dot = document.createElement('div');
+        dot.className = 'dot';
+        dot.onclick = () => goToIndex(index);
+        dotsContainer.appendChild(dot);
+    });
+
+    const dots = document.querySelectorAll('.dot');
+    let autoplayInterval = null;
+    let isPlaying = true;
+    const playIcon = document.querySelector('.play-icon');
+    const pauseIcon = document.querySelector('.pause-icon');
+
+    function updateCoverflow() {
+        if (isAnimating) return;
+        isAnimating = true;
+
+        items.forEach((item, index) => {
+            let offset = index - currentIndex;
+            if (offset > items.length / 2) offset -= items.length;
+            else if (offset < -items.length / 2) offset += items.length;
+            
+            const absOffset = Math.abs(offset);
+            const sign = Math.sign(offset);
+            
+            let translateX = offset * 220;
+            let translateZ = -absOffset * 200;
+            let rotateY = -sign * Math.min(absOffset * 45, 45);
+            let opacity = 1 - (absOffset * 0.3);
+            let scale = 1 - (absOffset * 0.15);
+
+            if (absOffset > 2) {
+                opacity = 0;
+                translateX = sign * 600;
+            }
+
+            item.style.transform = `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`;
+            item.style.opacity = opacity;
+            item.style.zIndex = 100 - absOffset;
+            item.classList.toggle('active', index === currentIndex);
+        });
+
+        dots.forEach((dot, index) => dot.classList.toggle('active', index === currentIndex));
+
+        const currentData = imageData[currentIndex];
+        currentTitle.style.animation = 'none';
+        currentDescription.style.animation = 'none';
+        
+        // Use requestAnimationFrame to ensure the style is applied before re-triggering animation
+        requestAnimationFrame(() => {
+            currentTitle.textContent = currentData.title;
+            currentDescription.textContent = currentData.description;
+            currentTitle.style.animation = 'fadeIn 0.6s forwards';
+            currentDescription.style.animation = 'fadeIn 0.6s forwards 0.2s';
+        });
+
+        setTimeout(() => isAnimating = false, 600);
+    }
+
+    function navigate(direction) {
+        if (isAnimating) return;
+        currentIndex = (currentIndex + direction + items.length) % items.length;
+        updateCoverflow();
+    }
+
+    function goToIndex(index) {
+        if (isAnimating || index === currentIndex) return;
+        currentIndex = index;
+        updateCoverflow();
+    }
+
+    container.addEventListener('keydown', e => {
+        if (e.key === 'ArrowLeft') navigate(-1);
+        if (e.key === 'ArrowRight') navigate(1);
+    });
+
+    items.forEach((item, index) => item.addEventListener('click', () => goToIndex(index)));
+
+    let touchStartX = 0;
+    container.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+    container.addEventListener('touchend', e => {
+        const touchEndX = e.changedTouches[0].screenX;
+        const diffX = touchStartX - touchEndX;
+        if (Math.abs(diffX) > 50) {
+            handleUserInteraction();
+            navigate(diffX > 0 ? 1 : -1);
+        }
+    }, { passive: true });
+
+    // --- CORRECTED REFLECTION LOGIC ---
+    items.forEach(item => {
+        const img = item.querySelector('img');
+        const reflection = item.querySelector('.reflection');
+        const gradient = 'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 1) 100%)';
+        
+        const applyReflection = () => {
+            reflection.style.background = `${gradient}, url(${img.src})`;
+            reflection.style.backgroundSize = 'cover';
+            reflection.style.backgroundPosition = 'center';
+        };
+
+        if (img.complete) {
+            applyReflection();
+        } else {
+            img.onload = applyReflection;
+        }
+    });
+
+    function startAutoplay() {
+        stopAutoplay();
+        autoplayInterval = setInterval(() => navigate(1), 4000);
+        isPlaying = true;
+        playIcon.style.display = 'none';
+        pauseIcon.style.display = 'block';
+    }
+
+    function stopAutoplay() {
+        clearInterval(autoplayInterval);
+        autoplayInterval = null;
+        isPlaying = false;
+        playIcon.style.display = 'block';
+        pauseIcon.style.display = 'none';
+    }
+
+    function toggleAutoplay() {
+        if (isPlaying) stopAutoplay();
+        else startAutoplay();
+    }
+
+    function handleUserInteraction() { if (isPlaying) stopAutoplay(); }
+
+    document.querySelectorAll('.nav-button, .dot, .coverflow-item').forEach(el => el.addEventListener('click', handleUserInteraction));
+    container.addEventListener('keydown', e => {
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') handleUserInteraction();
+    });
+    
+    // Initialize
+    updateCoverflow();
+    container.focus();
+    startAutoplay();
+</script>
+
+</body>
+</html>
