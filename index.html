@@ -162,8 +162,8 @@
         .dot.active { background: rgba(255, 255, 255, 0.8); transform: scale(1.3); }
 
         .info { position: absolute; top: 60px; left: 50%; transform: translateX(-50%); color: white; text-align: center; z-index: 200; width: 90%; }
-        .info h2 { font-size: 32px; margin-bottom: 10px; opacity: 0; animation: fadeInText 0.6s forwards; }
-        .info p { font-size: 16px; margin-bottom: 10px; opacity: 0; animation: fadeInText 0.6s forwards 0.2s; }
+        .info h2 { font-family: 'Patrick Hand', cursive;font-size: 37px; margin-bottom: 10px; opacity: 0; animation: fadeInText 0.6s forwards; }
+        .info p { font-family: 'Patrick Hand', cursive;font-size: 16px; margin-bottom: 10px; opacity: 0; animation: fadeInText 0.6s forwards 0.2s; }
         @keyframes fadeInText { to { opacity: 1; } }
 
         .play-pause-button { position: absolute; bottom: 120px; left: 50%; transform: translateX(-50%); background: rgba(255, 255, 255, 0.1); border: 2px solid rgba(255, 255, 255, 0.2); color: white; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; backdrop-filter: blur(10px); z-index: 200; }
@@ -202,7 +202,7 @@
 </head>
 <body>
     
-        <!-- Loading Animation -->
+    <!-- Loading Animation -->
     <div class="loader-wrapper">
         <div class="text-center">
             <h1 class="welcome-text text-2xl md:text-4xl font-bold mb-6">Welcome To Clubs OF PVPSIT (CSD, CSM)</h1>
@@ -214,7 +214,7 @@
         </div>
     </div>
 
-            <!-- Header Banner -->
+    <!-- Header Banner -->
     <img src="./images/head1.jpg" 
          class="header-image" 
          width="100%"
@@ -227,18 +227,17 @@
             <div class="flex items-center justify-between h-16">
                 <!-- Left Side (Desktop) -->
                 <div class="hidden md:flex items-center">
-                    <a href="https://www.pvpsiddhartha.ac.in/aiml_web/index.html" class="text-gray-200 hover:bg-cyan-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">CSM Department Page</a>
+                    <a href="https://www.pvpsiddhartha.ac.in/aiml_web/index.html" class="text-gray-200 bg-cyan-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">CSM Department Page</a>
                 </div>
 
                 <!-- Center Links (Desktop) -->
                 <div class="hidden md:flex items-center space-x-4">
-                    <a href="#home" class="text-gray-200 hover:bg-cyan-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">Home</a>
-                    <a href="#clubs-section" class="text-gray-200 hover:bg-cyan-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">Clubs</a>
+                    <a href="https://www.pvpsiddhartha.ac.in/" class="text-gray-200 bg-cyan-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">PVPSIT Home Page</a>
                 </div>
 
                 <!-- Right Side (Desktop) -->
                 <div class="hidden md:flex items-center">
-                    <a href="https://www.pvpsiddhartha.ac.in/ds_web/index.html" class="text-gray-200 hover:bg-cyan-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">CSD Department Page</a>
+                    <a href="https://www.pvpsiddhartha.ac.in/ds_web/index.html" class="text-gray-200 bg-cyan-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">CSD Department Page</a>
                 </div>
 
                 <!-- Mobile: Logo on Left, Hamburger on Right -->
@@ -257,19 +256,12 @@
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="mobile-menu md:hidden absolute top-16 left-0 w-full custom-nav">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="#home" class="text-gray-200 hover:bg-cyan-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Home</a>
-                <a href="#clubs-section" class="text-gray-200 hover:bg-cyan-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Clubs</a>
-                <a href="https://www.pvpsiddhartha.ac.in/aiml_web/index.html"  class="text-gray-200 hover:bg-cyan-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">CSM Department Page</a>
-                <a href="https://www.pvpsiddhartha.ac.in/ds_web/index.html"  class="text-gray-200 hover:bg-cyan-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">CSD Department Page</a>
+                <a href="https://www.pvpsiddhartha.ac.in/aiml_web/index.html"  class="text-gray-200 bg-cyan-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">CSM Department Page</a>
+                <a href="https://www.pvpsiddhartha.ac.in/"  class="text-gray-200 hover:bg-cyan-700 text-white block px-3 py-2 rounded-md text-base font-medium">PVPSIT Home Page</a>
+                <a href="https://www.pvpsiddhartha.ac.in/ds_web/index.html"  class="text-gray-200 bg-cyan-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">CSD Department Page</a>
             </div>
         </div>
     </nav>
-
-
-
-
-
-
     
     <!-- Section 1: Advanced 3D Coverflow Carousel -->
     <section id="home" class="section">
@@ -616,5 +608,19 @@
     updateCoverflow();
     startAutoplay();
 </script>
+
+<!-- ============================ -->
+<!-- ===== FIX ADDED HERE ===== -->
+<!-- ============================ -->
+<script>
+    // Mobile Menu Toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('active');
+    });
+</script>
+
 </body>
 </html>
