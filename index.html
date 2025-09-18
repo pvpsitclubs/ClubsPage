@@ -121,7 +121,7 @@
             object-fit: cover;
         }
 
-        /* --- Section 1: Circular Wheel Carousel --- */
+        /* --- Section 1: Coverflow Carousel --- */
         .section {
             height: 78vh;
             position: relative;
@@ -130,73 +130,28 @@
             justify-content: center;
             background: radial-gradient(ellipse at center, #1a1a2e 0%, #0f0f0f 100%);
             overflow: hidden;
-            z-index: 1;
+            z-index: 1; /* This line was added */
         }
 
         .coverflow-wrapper { width: 90%; height: 100%; display: flex; align-items: center; justify-content: center; }
         .coverflow-container { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; perspective: 1200px; position: relative; }
-        .coverflow { 
-            position: relative; 
-            width: 600px; 
-            height: 600px; 
-            margin: auto;
-            transform-style: preserve-3d;
-        }
+        .coverflow { display: flex; align-items: center; justify-content: center; transform-style: preserve-3d; position: relative; width: 100%; height: 400px; }
 
         .coverflow-item {
             position: absolute;
-            width: 280px;
-            height: 220px;
-            top: 50%;
-            left: 50%;
-            margin-top: -110px;
-            margin-left: -140px;
-            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            width: 500px;
+            height: 400px;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             cursor: pointer;
             user-select: none;
-            transform-origin: 50% 50%;
-            border-radius: 15px;
-            overflow: hidden;
         }
 
-        .coverflow-item .cover { 
-            width: 100%; 
-            height: 100%; 
-            border-radius: 15px; 
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6); 
-            position: relative; 
-            overflow: hidden; 
-            transform-style: preserve-3d; 
-            background: #333;
-            transition: all 0.3s ease;
-        }
-        
-        .coverflow-item .cover img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-            border-radius: 15px; 
-        }
+        .coverflow-item .cover { width: 100%; height: 100%; border-radius: 10px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8); position: relative; overflow: hidden; transform-style: preserve-3d; background: #333; }
+        .coverflow-item .cover img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
 
-        .coverflow-item.active { 
-            z-index: 100; 
-            transform: translateZ(80px) scale(1.3) !important;
-        }
-        
-        .coverflow-item.active .cover { 
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
-            border: 3px solid #6a11cb;
-        }
-
-        /* Wheel rotation animation */
-        .wheel-rotating {
-            animation: wheelRotate 0.8s ease-in-out;
-        }
-
-        @keyframes wheelRotate {
-            0% { transform: rotateZ(0deg); }
-            100% { transform: rotateZ(60deg); }
-        }
+        .reflection { position: absolute; top: 100%; left: 0; width: 100%; height: 100%; border-radius: 10px; transform: scaleY(-1); background-size: cover; background-position: center; }
+        .coverflow-item.active { z-index: 100; }
+        .coverflow-item.active .cover { box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9); }
 
         .nav-button { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255, 255, 255, 0.1); border: 2px solid rgba(255, 255, 255, 0.2); color: white; width: 60px; height: 60px; border-radius: 50%; cursor: pointer; font-size: 24px; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; backdrop-filter: blur(10px); z-index: 200; }
         .nav-button:hover { background: rgba(255, 255, 255, 0.2); transform: translateY(-50%) scale(1.1); }
@@ -234,8 +189,8 @@
         
         /* Mobile Responsive */
         @media (max-width: 768px) {
-            .coverflow { width: 500px; height: 500px; }
-            .coverflow-item { width: 180px; height: 140px; margin-top: -70px; margin-left: -90px; }
+            .coverflow-item { width: 220px; height: 180px; }
+            .coverflow { height: 300px; }
             .nav-button { width: 45px; height: 45px; font-size: 20px; }
             .nav-button.prev { left: 15px; }
             .nav-button.next { right: 15px; }
@@ -309,7 +264,7 @@
         </div>
     </nav>
     
-    <!-- Section 1: Circular Wheel Carousel -->
+    <!-- Section 1: Advanced 3D Coverflow Carousel -->
     <section id="home" class="section">
         <div class="coverflow-wrapper">
             <div class="info">
@@ -325,6 +280,7 @@
                                 <img src="./images/AiCoding.png" alt="AI Club" loading="lazy">
                             </a>
                         </div>
+                        <div class="reflection"></div>
                     </div>
                     <div class="coverflow-item" data-index="1">
                         <div class="cover">
@@ -332,6 +288,7 @@
                                 <img src="./images/Coding.jpg" alt="Coding Club" loading="lazy">
                             </a>
                         </div>
+                        <div class="reflection"></div>
                     </div>
                     <div class="coverflow-item" data-index="2">
                         <div class="cover">
@@ -339,6 +296,7 @@
                                 <img src="./images/content.png" alt="Content Creation" loading="lazy">
                             </a>
                         </div>
+                        <div class="reflection"></div>
                     </div>
                     <div class="coverflow-item" data-index="3">
                         <div class="cover">
@@ -346,6 +304,7 @@
                                 <img src="./images/Cultural.png" alt="Cultural Club" loading="lazy">
                             </a>
                         </div>
+                        <div class="reflection"></div>
                     </div>
                     <div class="coverflow-item" data-index="4">
                         <div class="cover">
@@ -353,6 +312,7 @@
                                 <img src="./images/hackthon.png" alt="Hackathon Club" loading="lazy">
                             </a>
                         </div>
+                        <div class="reflection"></div>
                     </div>
                     <div class="coverflow-item" data-index="5">
                         <div class="cover">
@@ -360,6 +320,7 @@
                                 <img src="./images/Sports.png" alt="Sports Club" loading="lazy">
                             </a>
                         </div>
+                        <div class="reflection"></div>
                     </div>
                 </div>
                 
@@ -454,7 +415,7 @@
                 
                 <div class="club-card-grid hover-lift" style="background-image: url('./images/content.png');width: 100%; height: auto;">
                     <div class="card-content">
-                        <h3 class="club-title">Creative Club</h3>
+                        <h3 class="club-title">Content Creation</h3>
                         <p class="text-white text-sm mt-2 opacity-90">Telling stories through digital media</p>
                         <div class="flex justify-between items-center mt-4">
                             <a href="https://creativeclubcsmd26.github.io/Page-Pixel/" target="_blank" class="px-5 py-2 bg-yellow-700 rounded-full text-white text-sm">Go to Club Page</a>
@@ -479,16 +440,14 @@
         document.body.classList.add('loaded');
     });
 
-    // Circular Wheel Carousel JavaScript
+    // Advanced 3D Coverflow Carousel JavaScript
     const items = document.querySelectorAll('.coverflow-item');
     const dotsContainer = document.getElementById('dots');
     const currentTitle = document.getElementById('current-title');
     const currentDescription = document.getElementById('current-description');
     const container = document.querySelector('.coverflow-container');
-    const coverflow = document.getElementById('coverflow');
-    let currentIndex = 0;
+    let currentIndex = Math.floor(items.length / 2);
     let isAnimating = false;
-    let currentRotation = 0;
 
     const imageData = [
         { title: "AI Club", description: "Exploring the frontiers of artificial intelligence" },
@@ -513,50 +472,37 @@
     const playIcon = document.querySelector('.play-icon');
     const pauseIcon = document.querySelector('.pause-icon');
 
-    // Calculate the angle between each item in the wheel
-    const angleStep = 360 / items.length;
-    
-    // Responsive radius based on screen size
-    function getRadius() {
-        return window.innerWidth <= 768 ? 200 : 280; // Smaller radius for mobile
-    }
-
-    function updateWheel() {
+    function updateCoverflow() {
         if (isAnimating) return;
         isAnimating = true;
 
-        // Add rotation animation class
-        coverflow.classList.add('wheel-rotating');
-
-        const radius = getRadius(); // Get responsive radius
-
         items.forEach((item, index) => {
-            // Calculate the angle for this item
-            const angle = (index * angleStep) - currentRotation;
-            const radian = (angle * Math.PI) / 180;
+            let offset = index - currentIndex;
+            if (offset > items.length / 2) offset -= items.length;
+            else if (offset < -items.length / 2) offset += items.length;
             
-            // Calculate position on the circle
-            const x = Math.cos(radian) * radius;
-            const y = Math.sin(radian) * radius;
+            const absOffset = Math.abs(offset);
+            const sign = Math.sign(offset);
             
-            // Calculate scale and opacity based on position
-            const normalizedY = (y + radius) / (radius * 2); // 0 to 1
-            const scale = 0.6 + (0.4 * (1 - Math.abs(normalizedY - 0.5) * 2)); // Scale between 0.6 and 1
-            const opacity = 0.4 + (0.6 * (1 - Math.abs(normalizedY - 0.5) * 2)); // Opacity between 0.4 and 1
-            
-            // Apply transform
-            item.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
+            let translateX = offset * 220;
+            let translateZ = -absOffset * 200;
+            let rotateY = -sign * Math.min(absOffset * 45, 45);
+            let opacity = 1 - (absOffset * 0.3);
+            let scale = 1 - (absOffset * 0.15);
+
+            if (absOffset > 2) {
+                opacity = 0;
+                translateX = sign * 600;
+            }
+
+            item.style.transform = `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`;
             item.style.opacity = opacity;
-            item.style.zIndex = Math.round(scale * 100);
-            
-            // Mark active item (front of wheel)
+            item.style.zIndex = 100 - absOffset;
             item.classList.toggle('active', index === currentIndex);
         });
 
-        // Update dots
         dots.forEach((dot, index) => dot.classList.toggle('active', index === currentIndex));
 
-        // Update info text
         const currentData = imageData[currentIndex];
         currentTitle.style.animation = 'none';
         currentDescription.style.animation = 'none';
@@ -568,38 +514,19 @@
             currentDescription.style.animation = 'fadeIn 0.6s forwards 0.2s';
         });
 
-        // Remove animation class after animation completes
-        setTimeout(() => {
-            coverflow.classList.remove('wheel-rotating');
-            isAnimating = false;
-        }, 800);
+        setTimeout(() => isAnimating = false, 600);
     }
 
     function navigate(direction) {
         if (isAnimating) return;
-        
-        // Update current index
         currentIndex = (currentIndex + direction + items.length) % items.length;
-        
-        // Update rotation angle
-        currentRotation += direction * angleStep;
-        
-        updateWheel();
+        updateCoverflow();
     }
 
     function goToIndex(index) {
         if (isAnimating || index === currentIndex) return;
-        
-        // Calculate the shortest rotation direction
-        let diff = index - currentIndex;
-        if (Math.abs(diff) > items.length / 2) {
-            diff = diff > 0 ? diff - items.length : diff + items.length;
-        }
-        
         currentIndex = index;
-        currentRotation += diff * angleStep;
-        
-        updateWheel();
+        updateCoverflow();
     }
 
     // Keyboard navigation
@@ -619,6 +546,25 @@
             navigate(diffX > 0 ? 1 : -1);
         }
     }, { passive: true });
+
+    // Reflection effects
+    items.forEach(item => {
+        const img = item.querySelector('img');
+        const reflection = item.querySelector('.reflection');
+        const gradient = 'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 1) 100%)';
+        
+        const applyReflection = () => {
+            reflection.style.background = `${gradient}, url(${img.src})`;
+            reflection.style.backgroundSize = 'cover';
+            reflection.style.backgroundPosition = 'center';
+        };
+
+        if (img.complete) {
+            applyReflection();
+        } else {
+            img.onload = applyReflection;
+        }
+    });
 
     // Autoplay functionality
     function startAutoplay() {
@@ -644,7 +590,7 @@
 
     function handleUserInteraction() { if (isPlaying) stopAutoplay(); }
 
-    // --- Wheel Carousel Initialisation ---
+    // --- Carousel Initialisation ---
     // Override HTML onclick to include user interaction handling
     document.querySelector('.nav-button.prev').onclick = () => { handleUserInteraction(); navigate(-1); };
     document.querySelector('.nav-button.next').onclick = () => { handleUserInteraction(); navigate(1); };
@@ -660,7 +606,7 @@
     });
 
     // Initial setup
-    updateWheel();
+    updateCoverflow();
     startAutoplay();
 </script>
 
