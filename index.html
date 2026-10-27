@@ -1,627 +1,2094 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campus Clubs - Discover Your Community</title>
-    <meta name="description" content="Explore and join amazing campus clubs. Find your community and discover new interests with our interactive club directory.">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts -->
+    <title>PVPSIT Student Clubs | CSD & CSM Departments</title>
+    <meta name="description"
+        content="Discover the clubs of PVPSIT — a vibrant community where students explore their interests, develop their talents, collaborate, and turn ideas into experiences.">
+
+    <!-- Inline script to prevent theme flash before render -->
+    <script>
+        (function() {
+            var savedTheme = localStorage.getItem('pvpsit-theme');
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        })();
+    </script>
+
+    <!-- Google Fonts: Cormorant Garamond & Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <style>
-        * {
+        /* ========================================================= */
+        /* THEME DESIGN TOKENS (LIGHT & DARK)                        */
+        /* ========================================================= */
+        :root {
+            /* Shared Accent Constants */
+            --elegant-gold: #D9A441;
+            --gold-hover: #c59132;
+            --gold-light: rgba(217, 164, 65, 0.12);
+            --gold-border: rgba(217, 164, 65, 0.38);
+            --royal-blue: #2456A6;
+            --royal-blue-hover: #1d468a;
+
+            /* Typography */
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+            /* Motion Timing */
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+            --duration: 0.35s;
+            --theme-transition: background-color 0.28s ease, color 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
+        }
+
+        /* LIGHT THEME (Default) */
+        :root,
+        [data-theme="light"] {
+            --navy-deep: #102A50;
+            --navy-dark: #0a1b33;
+            --warm-white: #FAFAF7;
+            --soft-neutral-bg: #F0F3F8;
+
+            --bg-page: var(--soft-neutral-bg);
+            --bg-banner: var(--warm-white);
+            --bg-nav: rgba(16, 42, 80, 0.96);
+            --bg-nav-drawer: #0a1b33;
+            --bg-hero: linear-gradient(175deg, #102A50 0%, #0a1b33 100%);
+            --hero-text: #FAFAF7;
+            --hero-desc: #b5c3d6;
+            --hero-card-bg: rgba(255, 255, 255, 0.04);
+            --hero-card-border: rgba(255, 255, 255, 0.12);
+
+            --bg-coordinator-sec: #FAFAF7;
+            --bg-coordinator-card: #ffffff;
+            --coordinator-portrait-col: linear-gradient(155deg, #102A50 0%, #0a1b33 100%);
+            --coordinator-text-main: #14213d;
+            --coordinator-heading: #102A50;
+            --coordinator-intro-bg: #F0F3F8;
+            --coordinator-intro-text: #53647d;
+
+            --bg-clubs-sec: #F0F3F8;
+            --card-surface: #ffffff;
+            --card-border: rgba(16, 42, 80, 0.08);
+            --card-title: #102A50;
+            --card-desc: #53647d;
+
+            --text-main: #14213d;
+            --text-muted: #53647d;
+            --text-light: #8493a8;
+
+            --meta-card-bg: #ffffff;
+            --meta-card-border: #e2e8f0;
+            --meta-icon-bg: rgba(16, 42, 80, 0.05);
+            --meta-icon-color: #102A50;
+            --meta-value: #102A50;
+
+            --border-subtle: #e2e8f0;
+            --border-banner: #e2e8f0;
+
+            --shadow-subtle: 0 4px 16px rgba(16, 42, 80, 0.04);
+            --shadow-card: 0 10px 30px rgba(16, 42, 80, 0.06);
+            --shadow-hover: 0 20px 42px rgba(16, 42, 80, 0.12);
+
+            --btn-sec-border: #e2e8f0;
+            --btn-sec-text: #102A50;
+            --btn-sec-hover: #F0F3F8;
+
+            --footer-bg: #102A50;
+            --footer-text: #9ab0ce;
+            --footer-bottom: #7d93b3;
+
+            --toggle-bg: rgba(255, 255, 255, 0.1);
+            --toggle-border: rgba(255, 255, 255, 0.2);
+            --toggle-icon-color: #f6c855;
+        }
+
+        /* DARK THEME (Sophisticated Midnight & Slate Surfaces) */
+        [data-theme="dark"] {
+            --navy-deep: #0a1322;
+            --navy-dark: #070d17;
+            --warm-white: #e6edf8;
+            --soft-neutral-bg: #0b1526;
+
+            --bg-page: #0b1526;
+            --bg-banner: #080f1b;
+            --bg-nav: rgba(10, 19, 34, 0.95);
+            --bg-nav-drawer: #070d17;
+            --bg-hero: linear-gradient(175deg, #091322 0%, #050a12 100%);
+            --hero-text: #f1f5f9;
+            --hero-desc: #94a3b8;
+            --hero-card-bg: rgba(20, 36, 61, 0.45);
+            --hero-card-border: rgba(255, 255, 255, 0.08);
+
+            --bg-coordinator-sec: #0c182c;
+            --bg-coordinator-card: #102038;
+            --coordinator-portrait-col: linear-gradient(155deg, #070e1a 0%, #0c182c 100%);
+            --coordinator-text-main: #f1f5f9;
+            --coordinator-heading: #f8fafc;
+            --coordinator-intro-bg: #0c182c;
+            --coordinator-intro-text: #cbd5e1;
+
+            --bg-clubs-sec: #091424;
+            --card-surface: #102038;
+            --card-border: rgba(255, 255, 255, 0.08);
+            --card-title: #f8fafc;
+            --card-desc: #94a3b8;
+
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --text-light: #64748b;
+
+            --meta-card-bg: #0e1b30;
+            --meta-card-border: rgba(255, 255, 255, 0.08);
+            --meta-icon-bg: rgba(217, 164, 65, 0.12);
+            --meta-icon-color: #D9A441;
+            --meta-value: #f1f5f9;
+
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-banner: rgba(255, 255, 255, 0.06);
+
+            --shadow-subtle: 0 4px 16px rgba(0, 0, 0, 0.25);
+            --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.35);
+            --shadow-hover: 0 20px 42px rgba(0, 0, 0, 0.5);
+
+            --btn-sec-border: rgba(255, 255, 255, 0.18);
+            --btn-sec-text: #e2e8f0;
+            --btn-sec-hover: rgba(255, 255, 255, 0.08);
+
+            --footer-bg: #060b13;
+            --footer-text: #8295b0;
+            --footer-bottom: #556882;
+
+            --toggle-bg: rgba(217, 164, 65, 0.15);
+            --toggle-border: rgba(217, 164, 65, 0.35);
+            --toggle-icon-color: #f6c855;
+        }
+
+        /* --- Base & Reset --- */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
         html {
             scroll-behavior: smooth;
+            font-size: 16px;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background: #0f0f0f;
-            color: #fff;
+            font-family: var(--font-sans);
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            transition: var(--theme-transition);
         }
 
-        /* --- Enhanced Loading Animation --- */
-        .loader-wrapper {
-            position: fixed;
+        /* Accessibility: Focus Indicators */
+        a:focus-visible,
+        button:focus-visible {
+            outline: 2px solid var(--elegant-gold);
+            outline-offset: 3px;
+        }
+
+        /* --- Structural Layout --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* --- College Institutional Banner --- */
+        .college-banner {
+            background-color: var(--bg-banner);
+            border-bottom: 1px solid var(--border-banner);
+            text-align: center;
+            padding: 0.6rem 1rem;
+            transition: var(--theme-transition);
+        }
+
+        .college-banner-img {
+            max-width: 100%;
+            height: auto;
+            max-height: 130px;
+            object-fit: contain;
+            display: inline-block;
+            transition: opacity 0.3s ease;
+        }
+
+        [data-theme="dark"] .college-banner-img {
+            filter: brightness(0.96) contrast(1.04);
+        }
+
+        /* --- Sticky Navigation Bar --- */
+        .header-nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: var(--bg-nav);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.28);
+            transition: var(--theme-transition);
+        }
+
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: #ffffff;
+        }
+
+        .brand-monogram {
+            width: 38px;
+            height: 38px;
+            border-radius: 6px;
+            background: linear-gradient(135deg, var(--elegant-gold), #b8860b);
+            color: #070d17;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.15rem;
+            box-shadow: 0 2px 8px rgba(217, 164, 65, 0.3);
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-name {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.01em;
+            line-height: 1.15;
+        }
+
+        .brand-dept {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--elegant-gold);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        /* 3-Section Navigation Menu */
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #d1d9e6;
+            font-size: 0.92rem;
+            font-weight: 500;
+            padding: 0.5rem 0.2rem;
+            display: inline-block;
+            transition: color var(--duration) var(--ease-out);
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: #ffffff;
+        }
+
+        /* Active navigation indicator */
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: var(--elegant-gold);
+            border-radius: 2px;
+            transition: width var(--duration) var(--ease-out);
+        }
+
+        .nav-link.active {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        /* Institutional External Portals */
+        .nav-portals {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+        }
+
+        .portal-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: #d1d9e6;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-decoration: none;
+            padding: 0.4rem 0.85rem;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.04);
+            transition: all var(--duration) var(--ease-out);
+        }
+
+        .portal-link:hover {
+            color: var(--elegant-gold);
+            background: rgba(255, 255, 255, 0.09);
+            border-color: var(--elegant-gold);
+            transform: translateY(-1px);
+        }
+
+        /* --- Theme Toggle Button --- */
+        .theme-toggle-btn {
+            background: var(--toggle-bg);
+            border: 1px solid var(--toggle-border);
+            color: var(--toggle-icon-color);
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--duration) var(--ease-out);
+            margin-left: 0.35rem;
+            position: relative;
+        }
+
+        .theme-toggle-btn:hover {
+            transform: scale(1.08) rotate(15deg);
+            background: rgba(217, 164, 65, 0.22);
+            border-color: var(--elegant-gold);
+        }
+
+        .theme-toggle-btn svg {
+            width: 19px;
+            height: 19px;
+            stroke-width: 2.2;
+            transition: transform 0.4s var(--ease-out), opacity 0.3s ease;
+        }
+
+        /* Mobile Hamburger */
+        .mobile-toggle {
+            display: none;
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            cursor: pointer;
+            padding: 0.4rem;
+        }
+
+        .mobile-menu-drawer {
+            display: none;
+            background: var(--bg-nav-drawer);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.5rem 2rem;
+            transition: var(--theme-transition);
+        }
+
+        .mobile-menu-drawer.open {
+            display: block;
+        }
+
+        .mobile-menu-drawer a {
+            display: block;
+            color: #d1d9e6;
+            text-decoration: none;
+            padding: 0.75rem 0;
+            font-size: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .mobile-menu-drawer a.active {
+            color: var(--elegant-gold);
+            font-weight: 700;
+        }
+
+        .mobile-theme-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.85rem 0;
+            color: #e2e8f0;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        /* --- Section Shared Typography & Eyebrows --- */
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--royal-blue);
+            margin-bottom: 0.85rem;
+        }
+
+        [data-theme="dark"] .section-tag {
+            color: var(--elegant-gold);
+        }
+
+        .section-tag::before {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 1.5px;
+            background: currentColor;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            font-weight: 600;
+            color: var(--coordinator-heading);
+            line-height: 1.15;
+            letter-spacing: -0.01em;
+            margin-bottom: 1.25rem;
+            transition: var(--theme-transition);
+        }
+
+        .section-lead {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 680px;
+            line-height: 1.7;
+            transition: var(--theme-transition);
+        }
+
+        /* ========================================================= */
+        /* 1. HOME / HERO SECTION                                    */
+        /* ========================================================= */
+        .hero-section {
+            position: relative;
+            background: var(--bg-hero);
+            color: var(--hero-text);
+            padding: 7rem 0 7.5rem;
+            overflow: hidden;
+            transition: var(--theme-transition);
+        }
+
+        /* Abstract Subtle Layered Background & Texture */
+        .hero-backdrop {
+            position: absolute;
+            inset: 0;
+            background-image:
+                radial-gradient(circle at 80% 20%, rgba(36, 86, 166, 0.22) 0%, transparent 45%),
+                radial-gradient(circle at 10% 85%, rgba(217, 164, 65, 0.12) 0%, transparent 40%),
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 54px 54px, 54px 54px;
+            pointer-events: none;
+        }
+
+        .hero-grid {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-content {
+            max-width: 650px;
+        }
+
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.95rem;
+            border-radius: 9999px;
+            background: rgba(217, 164, 65, 0.12);
+            border: 1px solid rgba(217, 164, 65, 0.35);
+            color: var(--elegant-gold);
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-headline {
+            font-family: var(--font-display);
+            font-size: 4.2rem;
+            font-weight: 600;
+            line-height: 1.08;
+            letter-spacing: -0.02em;
+            color: var(--hero-text);
+            margin-bottom: 1.75rem;
+            transition: var(--theme-transition);
+        }
+
+        .hero-headline em {
+            font-style: italic;
+            color: var(--elegant-gold);
+            font-family: var(--font-display);
+        }
+
+        .hero-description {
+            font-size: 1.18rem;
+            line-height: 1.75;
+            color: var(--hero-desc);
+            margin-bottom: 2.75rem;
+            font-weight: 400;
+            transition: var(--theme-transition);
+        }
+
+        .hero-cta-group {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            flex-wrap: wrap;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            padding: 0.9rem 1.9rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all var(--duration) var(--ease-out);
+            cursor: pointer;
+            letter-spacing: 0.01em;
+        }
+
+        .btn-gold {
+            background: var(--elegant-gold);
+            color: #070d17;
+            box-shadow: 0 8px 24px rgba(217, 164, 65, 0.28);
+        }
+
+        .btn-gold:hover {
+            background: var(--gold-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(217, 164, 65, 0.38);
+        }
+
+        .btn-outline-light {
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            backdrop-filter: blur(8px);
+        }
+
+        .btn-outline-light:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        /* Hero Right Composition */
+        .hero-visual-card {
+            background: var(--hero-card-bg);
+            border: 1px solid var(--hero-card-border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            position: relative;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            transition: var(--theme-transition);
+        }
+
+        .hero-visual-card::before {
+            content: '';
+            position: absolute;
             top: 0;
             left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--elegant-gold), var(--royal-blue));
+            border-radius: 16px 16px 0 0;
+        }
+
+        .hero-stat-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-block {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-num {
+            font-family: var(--font-display);
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--elegant-gold);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--hero-desc);
+            margin-top: 0.4rem;
+            font-weight: 500;
+            transition: var(--theme-transition);
+        }
+
+        .hero-dept-badges {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+        }
+
+        .dept-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.88rem;
+            color: #d1d9e6;
+        }
+
+        .dept-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--elegant-gold);
+            box-shadow: 0 0 10px var(--elegant-gold);
+        }
+
+        /* ========================================================= */
+        /* 2. COORDINATOR SECTION (FACULTY PROFILE)                 */
+        /* ========================================================= */
+        .coordinator-section {
+            padding: 7.5rem 0;
+            background: var(--bg-coordinator-sec);
+            position: relative;
+            transition: var(--theme-transition);
+        }
+
+        .coordinator-wrapper {
+            background: var(--bg-coordinator-card);
+            border-radius: 16px;
+            border: 1px solid var(--card-border);
+            box-shadow: var(--shadow-card);
+            overflow: hidden;
+            position: relative;
+            transition: var(--theme-transition);
+        }
+
+        .coordinator-top-accent {
+            height: 4px;
+            background: linear-gradient(90deg, #102A50 0%, var(--royal-blue) 60%, var(--elegant-gold) 100%);
+        }
+
+        .coordinator-grid {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            align-items: stretch;
+        }
+
+        /* Left: Faculty Portrait Column */
+        .coordinator-portrait-col {
+            background: var(--coordinator-portrait-col);
+            padding: 3.5rem 2.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            color: #ffffff;
+            transition: var(--theme-transition);
+        }
+
+        .coordinator-portrait-col::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(217, 164, 65, 0.14) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .portrait-frame {
+            position: relative;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            padding: 6px;
+            background: linear-gradient(135deg, var(--elegant-gold) 0%, rgba(217, 164, 65, 0.3) 100%);
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.38);
+            margin-bottom: 1.5rem;
+            transition: transform var(--duration) var(--ease-out), box-shadow var(--duration) var(--ease-out);
+        }
+
+        .coordinator-wrapper:hover .portrait-frame {
+            transform: scale(1.02);
+            box-shadow: 0 20px 42px rgba(217, 164, 65, 0.35);
+        }
+
+        .faculty-portrait-img {
             width: 100%;
             height: 100%;
-            background: #0f0f0f;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.7s ease, visibility 0.7s ease;
-            transition-delay: 2.5s; /* Keep loader visible for a bit */
-        }
-
-        .welcome-text {
-            color: #fff;
-            font-weight: 800;
-            letter-spacing: 0.05em;
-            opacity: 0;
-            animation: flickerIn 2s ease-in-out forwards;
-        }
-        
-        @keyframes flickerIn {
-            0% {
-                opacity: 0;
-                text-shadow: none;
-            }
-            50% {
-                opacity: 1;
-                text-shadow: 0 0 10px #2575fc, 0 0 20px #2575fc, 0 0 40px #6a11cb;
-            }
-            100% {
-                opacity: 1;
-            }
-        }
-
-        .loader {
-            opacity: 0;
-            animation: fadeIn 1s ease-in-out 1s forwards;
-        }
-
-        .loader .dot {
-            width: 15px;
-            height: 15px;
-            background: #6a11cb;
             border-radius: 50%;
-            animation: pulse 1.5s infinite ease-in-out;
-            animation-delay: 1s;
-        }
-
-        .loader .dot:nth-child(2) { animation-delay: 1.2s; background: #2575fc; }
-        .loader .dot:nth-child(3) { animation-delay: 1.4s; background: #34d399; }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(0.5); opacity: 0.5; }
-            50% { transform: scale(1.2); opacity: 1; }
-        }
-
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-        
-        body.loaded .loader-wrapper {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        /* --- Navbar Styles --- */
-        .custom-nav {
-            background-color: #203354; /* Dark blue from image text */
-        }
-        
-        /* Mobile Menu Transitions */
-        .mobile-menu {
-            transition: transform 0.3s ease-in-out;
-            transform: translateX(-100%);
-        }
-        .mobile-menu.active {
-            transform: translateX(0);
-        }
-
-        /* --- Header Banner --- */
-        .header-image {
-            width: 100%;
-            height: auto;
             object-fit: cover;
+            object-position: center top;
+            display: block;
+            background-color: #070d17;
         }
 
-        /* --- Section 1: Coverflow Carousel --- */
-        .section {
-            height: 78vh;
-            position: relative;
+        .faculty-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.35rem 0.95rem;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(217, 164, 65, 0.4);
+            color: var(--elegant-gold);
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .faculty-affiliation {
+            margin-top: 1rem;
+            font-size: 0.82rem;
+            color: #a4b7d1;
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+        }
+
+        /* Right: Faculty Information Column */
+        .coordinator-info-col {
+            padding: 3.75rem 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            color: var(--coordinator-text-main);
+            transition: var(--theme-transition);
+        }
+
+        .faculty-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .faculty-eyebrow {
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--royal-blue);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--theme-transition);
+        }
+
+        [data-theme="dark"] .faculty-eyebrow {
+            color: var(--elegant-gold);
+        }
+
+        .faculty-eyebrow::before {
+            content: '';
+            display: inline-block;
+            width: 16px;
+            height: 1.5px;
+            background: currentColor;
+        }
+
+        .faculty-name {
+            font-family: var(--font-display);
+            font-size: 2.6rem;
+            font-weight: 600;
+            color: var(--coordinator-heading);
+            line-height: 1.15;
+            margin-bottom: 0.35rem;
+            transition: var(--theme-transition);
+        }
+
+        .faculty-designation {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--royal-blue);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--theme-transition);
+        }
+
+        [data-theme="dark"] .faculty-designation {
+            color: #82a8ec;
+        }
+
+        /* Professional Introduction */
+        .faculty-intro-box {
+            background: var(--coordinator-intro-bg);
+            border-left: 3px solid var(--elegant-gold);
+            padding: 1.25rem 1.5rem;
+            border-radius: 0 10px 10px 0;
+            margin-bottom: 2rem;
+            transition: var(--theme-transition);
+        }
+
+        .faculty-intro-text {
+            font-size: 0.98rem;
+            line-height: 1.7;
+            color: var(--coordinator-intro-text);
+            font-style: normal;
+            transition: var(--theme-transition);
+        }
+
+        /* Verified Details Grid */
+        .faculty-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.15rem;
+            margin-bottom: 2rem;
+        }
+
+        .meta-card {
+            background: var(--meta-card-bg);
+            border: 1px solid var(--meta-card-border);
+            border-radius: 10px;
+            padding: 0.9rem 1.15rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.85rem;
+            transition: all var(--duration) var(--ease-out), var(--theme-transition);
+        }
+
+        .meta-card:hover {
+            border-color: var(--gold-border);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .meta-icon-wrap {
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            background: var(--meta-icon-bg);
+            color: var(--meta-icon-color);
             display: flex;
             align-items: center;
             justify-content: center;
-            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0f0f0f 100%);
+            flex-shrink: 0;
+            margin-top: 2px;
+            transition: var(--theme-transition);
+        }
+
+        .meta-content {
+            display: flex;
+            flex-direction: column;
             overflow: hidden;
-            z-index: 1; /* This line was added */
         }
 
-        .coverflow-wrapper { width: 90%; height: 100%; display: flex; align-items: center; justify-content: center; }
-        .coverflow-container { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; perspective: 1200px; position: relative; }
-        .coverflow { display: flex; align-items: center; justify-content: center; transform-style: preserve-3d; position: relative; width: 100%; height: 400px; }
+        .meta-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-light);
+            margin-bottom: 0.2rem;
+            transition: var(--theme-transition);
+        }
 
-        .coverflow-item {
+        .meta-value {
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: var(--meta-value);
+            word-break: break-word;
+            transition: var(--theme-transition);
+        }
+
+        .meta-value a {
+            color: var(--meta-value);
+            text-decoration: none;
+            transition: color var(--duration) var(--ease-out);
+        }
+
+        .meta-value a:hover {
+            color: var(--royal-blue);
+            text-decoration: underline;
+        }
+
+        [data-theme="dark"] .meta-value a:hover {
+            color: var(--elegant-gold);
+        }
+
+        /* Actions Bar */
+        .coordinator-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-subtle);
+            flex-wrap: wrap;
+            transition: var(--theme-transition);
+        }
+
+        .btn-coordinator {
+            background: #102A50;
+            color: #ffffff;
+            padding: 0.8rem 1.6rem;
+            border-radius: 8px;
+            font-size: 0.92rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            transition: all var(--duration) var(--ease-out);
+            border: 1px solid transparent;
+        }
+
+        [data-theme="dark"] .btn-coordinator {
+            background: var(--royal-blue);
+        }
+
+        .btn-coordinator:hover {
+            background: var(--royal-blue-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 42, 80, 0.28);
+        }
+
+        [data-theme="dark"] .btn-coordinator:hover {
+            background: #183e78;
+        }
+
+        .btn-coordinator-secondary {
+            background: transparent;
+            color: var(--btn-sec-text);
+            border: 1px solid var(--btn-sec-border);
+            padding: 0.8rem 1.4rem;
+            border-radius: 8px;
+            font-size: 0.92rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            transition: all var(--duration) var(--ease-out), var(--theme-transition);
+        }
+
+        .btn-coordinator-secondary:hover {
+            background: var(--btn-sec-hover);
+            border-color: var(--elegant-gold);
+        }
+
+        /* ========================================================= */
+        /* 3. CLUBS SECTION (THE MAIN ATTRACTION)                    */
+        /* ========================================================= */
+        .clubs-section {
+            padding: 7.5rem 0;
+            background: var(--bg-clubs-sec);
+            position: relative;
+            transition: var(--theme-transition);
+        }
+
+        .clubs-header-wrap {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 3.5rem;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .clubs-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        /* Refined Club Card */
+        .club-card {
+            background: var(--card-surface);
+            border-radius: 14px;
+            border: 1px solid var(--card-border);
+            box-shadow: var(--shadow-card);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform var(--duration) var(--ease-out), box-shadow var(--duration) var(--ease-out), border-color var(--duration) var(--ease-out), var(--theme-transition);
+            position: relative;
+        }
+
+        .club-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--gold-border);
+        }
+
+        .club-media {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            background: #070d17;
+        }
+
+        .club-media-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s var(--ease-out);
+            display: block;
+        }
+
+        .club-card:hover .club-media-img {
+            transform: scale(1.07);
+        }
+
+        .club-category-pill {
             position: absolute;
-            width: 500px;
-            height: 400px;
-            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            cursor: pointer;
-            user-select: none;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(10, 19, 34, 0.9);
+            backdrop-filter: blur(8px);
+            color: #ffffff;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            padding: 0.35rem 0.85rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
         }
 
-        .coverflow-item .cover { width: 100%; height: 100%; border-radius: 10px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8); position: relative; overflow: hidden; transform-style: preserve-3d; background: #333; }
-        .coverflow-item .cover img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
+        .club-content {
+            padding: 1.75rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            transition: var(--theme-transition);
+        }
 
-        .reflection { position: absolute; top: 100%; left: 0; width: 100%; height: 100%; border-radius: 10px; transform: scaleY(-1); background-size: cover; background-position: center; }
-        .coverflow-item.active { z-index: 100; }
-        .coverflow-item.active .cover { box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9); }
+        .club-name {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--card-title);
+            line-height: 1.2;
+            margin-bottom: 0.65rem;
+            transition: color var(--duration) var(--ease-out), var(--theme-transition);
+        }
 
-        .nav-button { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255, 255, 255, 0.1); border: 2px solid rgba(255, 255, 255, 0.2); color: white; width: 60px; height: 60px; border-radius: 50%; cursor: pointer; font-size: 24px; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; backdrop-filter: blur(10px); z-index: 200; }
-        .nav-button:hover { background: rgba(255, 255, 255, 0.2); transform: translateY(-50%) scale(1.1); }
-        .nav-button.prev { left: 50px; }
-        .nav-button.next { right: 50px; }
+        .club-card:hover .club-name {
+            color: var(--royal-blue);
+        }
 
-        .dots-container { position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; z-index: 200; }
-        .dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255, 255, 255, 0.3); cursor: pointer; transition: all 0.3s ease; }
-        .dot.active { background: rgba(255, 255, 255, 0.8); transform: scale(1.3); }
+        [data-theme="dark"] .club-card:hover .club-name {
+            color: #82a8ec;
+        }
 
-        .info { position: absolute; top: 60px; left: 50%; transform: translateX(-50%); color: white; text-align: center; z-index: 200; width: 90%; }
-        .info h2 { font-family: 'Patrick Hand', cursive;font-size: 37px; margin-bottom: 10px; opacity: 0; animation: fadeInText 0.6s forwards; }
-        .info p { font-family: 'Patrick Hand', cursive;font-size: 16px; margin-bottom: 10px; opacity: 0; animation: fadeInText 0.6s forwards 0.2s; }
-        @keyframes fadeInText { to { opacity: 1; } }
+        .club-desc {
+            font-size: 0.93rem;
+            color: var(--card-desc);
+            line-height: 1.65;
+            margin-bottom: 1.75rem;
+            flex-grow: 1;
+            transition: var(--theme-transition);
+        }
 
-        .play-pause-button { position: absolute; bottom: 120px; left: 50%; transform: translateX(-50%); background: rgba(255, 255, 255, 0.1); border: 2px solid rgba(255, 255, 255, 0.2); color: white; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; backdrop-filter: blur(10px); z-index: 200; }
-        .play-pause-button:hover { background: rgba(255, 255, 255, 0.2); transform: translateX(-50%) scale(1.1); }
-        .play-pause-button .pause-icon { font-size: 16px; letter-spacing: 2px; }
+        .club-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 1.25rem;
+            border-top: 1px solid var(--border-subtle);
+            transition: var(--theme-transition);
+        }
 
-        /* --- Section 2: Clubs Grid (Enhanced with Tailwind) --- */
-        .clubs-section { background: #f4f7fa; color: #333; }
-        .gradient-text { background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .person-image { animation: floating 3s ease-in-out infinite; }
-        @keyframes floating { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
-        
-        .club-card-grid { aspect-ratio: 5 / 4; border-radius: 15px; background-size: cover; background-position: center; position: relative; overflow: hidden; display: flex; align-items: flex-end; padding: 20px; transition: transform 0.3s ease, box-shadow 0.3s ease; }
-        .club-card-grid:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3); }
-        .club-card-grid::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%); }
-        .card-content { position: relative; z-index: 2; }
-        .club-title { color: white; font-size: 1.8rem; font-weight: bold; text-shadow: 2px 2px 5px rgba(0,0,0,0.7); }
+        .btn-club-visit {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            background: #102A50;
+            color: #ffffff;
+            font-size: 0.88rem;
+            font-weight: 700;
+            padding: 0.65rem 1.25rem;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: all var(--duration) var(--ease-out);
+        }
 
-        /* --- Enhanced Clubs Listing Section --- */
-        .hover-lift { transition: transform 0.3s ease, box-shadow 0.3s ease; }
-        .hover-lift:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); }
-        
-        /* Mobile Responsive */
+        [data-theme="dark"] .btn-club-visit {
+            background: var(--royal-blue);
+        }
+
+        .btn-club-visit:hover {
+            background: var(--elegant-gold);
+            color: #070d17;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 14px rgba(217, 164, 65, 0.35);
+        }
+
+        .club-ext-indicator {
+            font-size: 0.82rem;
+            color: var(--text-light);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: var(--theme-transition);
+        }
+
+        /* ========================================================= */
+        /* FOOTER (CLEAN & MINIMAL)                                  */
+        /* ========================================================= */
+        .site-footer {
+            background: var(--footer-bg);
+            color: #ffffff;
+            padding: 4.5rem 0 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            transition: var(--theme-transition);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 3.5rem;
+            margin-bottom: 3.5rem;
+        }
+
+        .footer-brand-title {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-brand-desc {
+            font-size: 0.92rem;
+            color: var(--footer-text);
+            line-height: 1.7;
+            max-width: 440px;
+            transition: var(--theme-transition);
+        }
+
+        .footer-col-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--elegant-gold);
+            margin-bottom: 1.25rem;
+        }
+
+        .footer-nav-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .footer-nav-list a {
+            color: #d1d9e6;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color var(--duration) var(--ease-out);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .footer-nav-list a:hover {
+            color: var(--elegant-gold);
+        }
+
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--footer-bottom);
+            flex-wrap: wrap;
+            gap: 1rem;
+            transition: var(--theme-transition);
+        }
+
+        /* ========================================================= */
+        /* ANIMATION & MOTION SYSTEM (RESTFUL & REFINED)             */
+        /* ========================================================= */
+        .reveal-node {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+        }
+
+        .reveal-node.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+        .delay-4 { transition-delay: 0.4s; }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+
+            .reveal-node {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+        }
+
+        /* ========================================================= */
+        /* RESPONSIVE DESIGN BREAKPOINTS                             */
+        /* ========================================================= */
+        @media (max-width: 1024px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .hero-headline {
+                font-size: 3.4rem;
+            }
+
+            .coordinator-grid {
+                grid-template-columns: 320px 1fr;
+            }
+
+            .coordinator-info-col {
+                padding: 3rem 2.5rem;
+            }
+
+            .clubs-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
         @media (max-width: 768px) {
-            .coverflow-item { width: 220px; height: 180px; }
-            .coverflow { height: 300px; }
-            .nav-button { width: 45px; height: 45px; font-size: 20px; }
-            .nav-button.prev { left: 15px; }
-            .nav-button.next { right: 15px; }
-            .info h2 { font-size: 24px; }
-            .info p { font-size: 14px; }
-            .person-image { display: none; }
-            .section { height: 60vh; }
+            .nav-menu,
+            .nav-portals {
+                display: none;
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+
+            .hero-section {
+                padding: 4.5rem 0 5rem;
+            }
+
+            .hero-headline {
+                font-size: 2.5rem;
+            }
+
+            .hero-description {
+                font-size: 1.05rem;
+            }
+
+            .section-title {
+                font-size: 2.3rem;
+            }
+
+            .coordinator-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .coordinator-portrait-col {
+                padding: 3rem 1.5rem 2rem;
+            }
+
+            .coordinator-info-col {
+                padding: 2.5rem 1.5rem;
+            }
+
+            .faculty-meta-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .clubs-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
         }
     </style>
 </head>
+
 <body>
-    
-    <!-- Loading Animation -->
-    <div class="loader-wrapper">
-        <div class="text-center">
-            <h1 class="welcome-text text-2xl md:text-4xl font-bold mb-6">Welcome To Clubs OF PVPSIT (CSD, CSM)</h1>
-            <div class="loader flex justify-center gap-4">
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-            </div>
+
+    <!-- ========================================================= -->
+    <!-- INSTITUTIONAL TOP BANNER                                  -->
+    <!-- ========================================================= -->
+    <header class="college-banner" role="banner">
+        <div class="container">
+            <img src="./images/head1.jpg" alt="Prasad V. Potluri Siddhartha Institute of Technology (Autonomous)"
+                class="college-banner-img" loading="eager" width="1200" height="130">
         </div>
-    </div>
+    </header>
 
-    <!-- Header Banner -->
-    <img src="./images/head1.jpg" 
-         class="header-image" 
-         width="100%"
-         height="auto"
-         alt="Vibrant campus club banner showcasing diverse student activities and community spirit">
-
-    <!-- Responsive Navigation Bar -->
-    <nav class="custom-nav sticky top-0 z-50 shadow-lg">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex items-center justify-between h-16">
-                <!-- Left Side (Desktop) -->
-                <div class="hidden md:flex items-center">
-                    <a href="https://www.pvpsiddhartha.ac.in/aiml_web/index.html" class="text-gray-200 bg-cyan-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">CSM Department Page</a>
+    <!-- ========================================================= -->
+    <!-- STICKY NAVIGATION (3 FOCUSED SECTIONS & THEME TOGGLE)     -->
+    <!-- ========================================================= -->
+    <nav class="header-nav" id="main-nav" aria-label="Main Navigation">
+        <div class="container nav-inner">
+            <a href="#home" class="brand-logo" aria-label="PVPSIT Clubs Home">
+                <div class="brand-monogram">P</div>
+                <div class="brand-text">
+                    <span class="brand-name">PVPSIT Clubs</span>
+                    <span class="brand-dept">CSD & CSM Departments</span>
                 </div>
+            </a>
 
-                <!-- Center Links (Desktop) -->
-                <div class="hidden md:flex items-center space-x-4">
-                    <a href="https://www.pvpsiddhartha.ac.in/" class="text-gray-200 bg-cyan-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">PVPSIT Home Page</a>
-                </div>
+            <!-- 3 Sections Navigation Menu -->
+            <ul class="nav-menu" id="desktop-menu">
+                <li class="nav-item">
+                    <a href="#home" class="nav-link active" data-section="home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#coordinator" class="nav-link" data-section="coordinator">Coordinator</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#clubs" class="nav-link" data-section="clubs">Clubs</a>
+                </li>
+            </ul>
 
-                <!-- Right Side (Desktop) -->
-                <div class="hidden md:flex items-center">
-                    <a href="https://www.pvpsiddhartha.ac.in/ds_web/index.html" class="text-gray-200 bg-cyan-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition">CSD Department Page</a>
-                </div>
+            <!-- Institutional Portals & Desktop Theme Toggle -->
+            <div class="nav-portals">
+                <a href="https://www.pvpsiddhartha.ac.in/" target="_blank" rel="noopener noreferrer"
+                    class="portal-link">
+                    <i data-lucide="building-2" style="width:14px;height:14px;"></i>
+                    PVPSIT Portal
+                </a>
+                <a href="https://www.pvpsiddhartha.ac.in/aiml_web/index.html" target="_blank" rel="noopener noreferrer"
+                    class="portal-link">
+                    CSM (AI&ML)
+                </a>
+                <a href="https://www.pvpsiddhartha.ac.in/ds_web/index.html" target="_blank" rel="noopener noreferrer"
+                    class="portal-link">
+                    CSD (Data Science)
+                </a>
 
-                <!-- Mobile: Logo on Left, Hamburger on Right -->
-                <div class="md:hidden flex items-center justify-between w-full">
-                    <a href="#" class="text-white text-lg font-bold">PVPSIT Clubs</a>
-                    <!-- Mobile Menu Button -->
-                    <button id="mobile-menu-button" class="text-gray-200 hover:text-white focus:outline-none">
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="mobile-menu md:hidden absolute top-16 left-0 w-full custom-nav">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="https://www.pvpsiddhartha.ac.in/aiml_web/index.html"  class="text-gray-200 bg-cyan-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">CSM Department Page</a>
-                <a href="https://www.pvpsiddhartha.ac.in/"  class="text-gray-200 hover:bg-cyan-700 text-white block px-3 py-2 rounded-md text-base font-medium">PVPSIT Home Page</a>
-                <a href="https://www.pvpsiddhartha.ac.in/ds_web/index.html"  class="text-gray-200 bg-cyan-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">CSD Department Page</a>
-            </div>
-        </div>
-    </nav>
-    
-    <!-- Section 1: Advanced 3D Coverflow Carousel -->
-    <section id="home" class="section">
-        <div class="coverflow-wrapper">
-            <div class="info">
-                <h2 id="current-title"></h2>
-                <p id="current-description"></p>
+                <!-- Desktop Theme Toggle Button -->
+                <button class="theme-toggle-btn" id="theme-toggle-desktop" aria-label="Switch to dark mode" title="Switch theme">
+                    <i data-lucide="moon" id="theme-icon-desktop"></i>
+                </button>
             </div>
 
-            <div class="coverflow-container" tabindex="0">
-                <div class="coverflow" id="coverflow">
-                    <div class="coverflow-item" data-index="0">
-                        <div class="cover">
-                            <a href="https://pvpsitclubs.github.io/AI-Club/" target="_blank">
-                                <img src="./images/AiCoding.jpeg" alt="AI Club" loading="lazy">
-                            </a>
-                        </div>
-                        <div class="reflection"></div>
-                    </div>
-                    <div class="coverflow-item" data-index="1">
-                        <div class="cover">
-                            <a href="https://codingclubpvpsit.github.io/CodingClub/" target="_blank">
-                                <img src="./images/Coding.jpeg" alt="Coding Club" loading="lazy">
-                            </a>
-                        </div>
-                        <div class="reflection"></div>
-                    </div>
-                    <div class="coverflow-item" data-index="2">
-                        <div class="cover">
-                            <a href="https://creative-club-ten.vercel.app/" target="_blank">
-                                <img src="./images/content.jpeg" alt="Content Creation" loading="lazy">
-                            </a>
-                        </div>
-                        <div class="reflection"></div>
-                    </div>
-                    <div class="coverflow-item" data-index="3">
-                        <div class="cover">
-                            <a href="https://cultural-club-one.vercel.app/" target="_blank">
-                                <img src="./images/Cultural.jpeg" alt="Cultural Club" loading="lazy">
-                            </a>
-                        </div>
-                        <div class="reflection"></div>
-                    </div>
-                    <div class="coverflow-item" data-index="4">
-                        <div class="cover">
-                            <a href="https://pvp-csmcsd-hackathon-club.vercel.app/" target="_blank">
-                                <img src="./images/hackthon.jpeg" alt="Hackathon Club" loading="lazy">
-                            </a>
-                        </div>
-                        <div class="reflection"></div>
-                    </div>
-                    <div class="coverflow-item" data-index="5">
-                        <div class="cover">
-                            <a href="https://csmcsd-sportsclub.github.io/csmcsd-sportsclub/" target="_blank">
-                                <img src="./images/Sports.jpeg" alt="Sports Club" loading="lazy">
-                            </a>
-                        </div>
-                        <div class="reflection"></div>
-                    </div>
-                </div>
-                
-                <button class="nav-button prev" onclick="navigate(-1)">‹</button>
-                <button class="nav-button next" onclick="navigate(1)">›</button>
-
-                <div class="dots-container" id="dots"></div>
-                
-                <button class="play-pause-button" id="playPauseBtn" onclick="toggleAutoplay()">
-                    <span class="play-icon">▶</span>
-                    <span class="pause-icon" style="display: none;">❚❚</span>
+            <!-- Mobile Controls Group (Toggle + Hamburger) -->
+            <div style="display:flex;align-items:center;gap:0.5rem;" class="mobile-controls-group">
+                <button class="theme-toggle-btn mobile-theme-btn" id="theme-toggle-mobile-header" aria-label="Switch theme" style="display:none;">
+                    <i data-lucide="moon" id="theme-icon-mobile-header"></i>
+                </button>
+                <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+                    <i data-lucide="menu" id="toggle-icon" style="width:24px;height:24px;"></i>
                 </button>
             </div>
         </div>
-    </section>
 
-    <!-- Section 2: Enhanced Clubs Grid -->
-    <section class="clubs-section py-16 px-4" id="clubs-section">
-        <div class="max-w-7xl mx-auto">
-            <!-- Header with floating images -->
-            <div class="flex justify-between items-center mb-12">
-                <img class="person-image w-32 h-auto hidden md:block" 
-                     src="./images/person2.png" 
-                     alt="Student Person 2" 
-                     style="animation-delay: -1.5s;" />
-                <div class="text-center flex-grow">
-                    <h2 class="text-4xl md:text-6xl font-bold gradient-text mb-4">Explore Our Clubs</h2>
-                    <p class="text-xl text-gray-600">Find your perfect community and discover new passions</p>
-                </div>
-                <img class="person-image w-32 h-auto hidden md:block" 
-                     src="./images/person1.png" 
-                     alt="Student Person 1" 
-                     style="animation-delay: -0.5s;" />
+        <!-- Mobile Drawer -->
+        <div class="mobile-menu-drawer" id="mobile-drawer">
+            <a href="#home" class="mobile-nav-link active" data-section="home">Home</a>
+            <a href="#coordinator" class="mobile-nav-link" data-section="coordinator">Coordinator</a>
+            <a href="#clubs" class="mobile-nav-link" data-section="clubs">Clubs</a>
+            <div class="mobile-theme-item">
+                <span id="theme-status-text">Appearance: Light Mode</span>
+                <button class="theme-toggle-btn" id="theme-toggle-drawer" aria-label="Toggle theme">
+                    <i data-lucide="moon" id="theme-icon-drawer"></i>
+                </button>
             </div>
-            
-            <!-- Enhanced Clubs Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-                <div class="club-card-grid hover-lift" style="background-image: url('./images/AiCoding.jpeg');">
-                    <div class="card-content">
-                        <h3 class="club-title">AI Club</h3>
-                        <p class="text-white text-sm mt-2 opacity-90">Exploring the frontiers of artificial intelligence</p>
-                        <div class="flex justify-between items-center mt-4">
-                            <a href="https://pvpsitclubs.github.io/AI-Club/" target="_blank" class="px-5 py-2 bg-yellow-700 rounded-full text-white text-sm">Go to Club Page</a>
-                            <span class="px-3 py-1 bg-blue-500 text-white rounded-full text-xs">Technology</span>
+            <a href="https://www.pvpsiddhartha.ac.in/" target="_blank" rel="noopener noreferrer">PVPSIT Portal ↗</a>
+            <a href="https://www.pvpsiddhartha.ac.in/aiml_web/index.html" target="_blank" rel="noopener noreferrer">CSM
+                Department ↗</a>
+            <a href="https://www.pvpsiddhartha.ac.in/ds_web/index.html" target="_blank" rel="noopener noreferrer">CSD
+                Department ↗</a>
+        </div>
+    </nav>
+
+    <!-- Style for Mobile Toggle Visibility -->
+    <style>
+        @media (max-width: 768px) {
+            .mobile-theme-btn {
+                display: inline-flex !important;
+            }
+        }
+    </style>
+
+    <!-- ========================================================= -->
+    <!-- SECTION 1: HOME / HERO                                    -->
+    <!-- ========================================================= -->
+    <section id="home" class="hero-section" aria-labelledby="hero-title">
+        <div class="hero-backdrop"></div>
+        <div class="container">
+            <div class="hero-grid">
+
+                <!-- Hero Left: Content -->
+                <div class="hero-content">
+                    <div class="hero-eyebrow reveal-node">
+                        <i data-lucide="sparkles" style="width:14px;height:14px;"></i>
+                        Student Innovation & Leadership
+                    </div>
+
+                    <h1 id="hero-title" class="hero-headline reveal-node delay-1">
+                        Where Passion <br>
+                        Meets <em>Community.</em>
+                    </h1>
+
+                    <p class="hero-description reveal-node delay-2">
+                        Discover the clubs of PVPSIT — a vibrant community where students explore their interests,
+                        develop their talents, collaborate, and turn ideas into experiences.
+                    </p>
+
+                    <div class="hero-cta-group reveal-node delay-3">
+                        <a href="#clubs" class="btn btn-gold" id="cta-explore-clubs">
+                            Explore Clubs
+                            <i data-lucide="arrow-down-right" style="width:18px;height:18px;"></i>
+                        </a>
+                        <a href="#coordinator" class="btn btn-outline-light" id="cta-meet-coordinator">
+                            Meet Our Coordinator
+                            <i data-lucide="user-check" style="width:18px;height:18px;"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Hero Right: Institutional Highlights Card -->
+                <div class="hero-visual-card reveal-node delay-2">
+                    <div class="hero-stat-row">
+                        <div class="stat-block">
+                            <span class="stat-num">06</span>
+                            <span class="stat-label">Active Student Clubs</span>
+                        </div>
+                        <div class="stat-block">
+                            <span class="stat-num">1000+</span>
+                            <span class="stat-label">Engaged Students</span>
+                        </div>
+                    </div>
+
+                    <div class="hero-dept-badges">
+                        <div class="dept-item">
+                            <div class="dept-dot"></div>
+                            <span>Department of Computer Science & Engineering (AI & ML)</span>
+                        </div>
+                        <div class="dept-item">
+                            <div class="dept-dot"></div>
+                            <span>Department of Computer Science & Engineering (Data Science)</span>
+                        </div>
+                        <div class="dept-item">
+                            <div class="dept-dot"></div>
+                            <span>Prasad V. Potluri Siddhartha Institute of Technology</span>
                         </div>
                     </div>
                 </div>
-                
-                <div class="club-card-grid hover-lift" style="background-image: url('./images/Cultural.jpeg');">
-                    <div class="card-content">
-                        <h3 class="club-title">Cultural Club</h3>
-                        <p class="text-white text-sm mt-2 opacity-90">Celebrating diversity and artistic expression</p>
-                        <div class="flex justify-between items-center mt-4">
-                            <a href="https://cultural-club-one.vercel.app/" target="_blank" class="px-5 py-2 bg-yellow-700 rounded-full text-white text-sm">Go to Club Page</a>
-                            <span class="px-3 py-1 bg-purple-500 text-white rounded-full text-xs">Arts</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="club-card-grid hover-lift" style="background-image: url('./images/Sports.jpeg');">
-                    <div class="card-content">
-                        <h3 class="club-title">Sports Club</h3>
-                        <p class="text-white text-sm mt-2 opacity-90">Promoting teamwork and physical excellence</p>
-                        <div class="flex justify-between items-center mt-4">
-                            <a href="https://csmcsd-sportsclub.github.io/csmcsd-sportsclub/" target="_blank" class="px-5 py-2 bg-yellow-700 rounded-full text-white text-sm">Go to Club Page</a>
-                            <span class="px-3 py-1 bg-green-500 text-white rounded-full text-xs">Sports</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="club-card-grid hover-lift" style="background-image: url('./images/hackthon.jpeg');">
-                    <div class="card-content">
-                        <h3 class="club-title">Hackathon Club</h3>
-                        <p class="text-white text-sm mt-2 opacity-90">Innovating under pressure and building great things</p>
-                        <div class="flex justify-between items-center mt-4">
-                            <a href="https://pvp-csmcsd-hackathon-club.vercel.app/" target="_blank" class="px-5 py-2 bg-yellow-700 rounded-full text-white text-sm">Go to Club Page</a>
-                            <span class="px-3 py-1 bg-blue-500 text-white rounded-full text-xs">Technology</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="club-card-grid hover-lift" style="background-image: url('./images/Coding.jpeg');width: 100%; height: auto;">
-                    <div class="card-content">
-                        <h3 class="club-title">Coding Club</h3>
-                        <p class="text-white text-sm mt-2 opacity-90">Building the future, one line of code at a time</p>
-                        <div class="flex justify-between items-center mt-4">
-                            <a href="https://codingclubpvpsit.github.io/CodingClub/" target="_blank" class="px-5 py-2 bg-yellow-700 rounded-full text-white text-sm">Go to Club Page</a>
-                            <span class="px-3 py-1 bg-blue-500 text-white rounded-full text-xs">Technology</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="club-card-grid hover-lift" style="background-image: url('./images/content.jpeg');width: 100%; height: auto;">
-                    <div class="card-content">
-                        <h3 class="club-title">Creative Club</h3>
-                        <p class="text-white text-sm mt-2 opacity-90">Telling stories through digital media</p>
-                        <div class="flex justify-between items-center mt-4">
-                            <a href="https://creative-club-ten.vercel.app/" target="_blank" class="px-5 py-2 bg-yellow-700 rounded-full text-white text-sm">Go to Club Page</a>
-                            <span class="px-3 py-1 bg-purple-500 text-white rounded-full text-xs">Arts</span>
-                        </div>
-                    </div>
-                </div>
+
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-2 px-4">
-        <div class="max-w-6xl mx-auto text-center">
-            <p class="text-gray-400">© 2025 Clubs PVPSIT. All rights reserved.</p>
+    <!-- ========================================================= -->
+    <!-- SECTION 2: COORDINATOR (FACULTY PROFILE)                  -->
+    <!-- ========================================================= -->
+    <section id="coordinator" class="coordinator-section" aria-labelledby="coordinator-heading">
+        <div class="container">
+
+            <div class="coordinator-wrapper reveal-node">
+                <div class="coordinator-top-accent"></div>
+                <div class="coordinator-grid">
+
+                    <!-- Portrait Column -->
+                    <div class="coordinator-portrait-col">
+                        <div class="portrait-frame">
+                            <img src="./images/faculty_portrait.jpg"
+                                alt="Dr. J. Sirisha - Faculty Coordinator, PVPSIT Clubs" class="faculty-portrait-img"
+                                loading="lazy" width="220" height="220">
+                        </div>
+                        <span class="faculty-badge">Faculty Coordinator</span>
+                        <div class="faculty-affiliation">
+                            <i data-lucide="clock" style="width:14px;height:14px;"></i>
+                            22+ Years at PVPSIT
+                        </div>
+                    </div>
+
+                    <!-- Details Column -->
+                    <div class="coordinator-info-col">
+                        <div>
+                            <div class="faculty-header">
+                                <span class="faculty-eyebrow">FACULTY COORDINATOR</span>
+                                <h2 id="coordinator-heading" class="faculty-name">Dr. J. Sirisha</h2>
+                                <div class="faculty-designation">
+                                    <i data-lucide="award"
+                                        style="width:18px;height:18px;color:var(--elegant-gold);"></i>
+                                    Associate Professor, Department of CSD & CSM
+                                </div>
+                            </div>
+
+                            <!-- Professionally Written Editable Introduction -->
+                            <div class="faculty-intro-box">
+                                <p class="faculty-intro-text">
+                                    “Dr. J. Sirisha, Associate Professor at PVPSIT, serves as the faculty coordinator
+                                    for the college clubs, guiding and supporting student-led cultural activities and
+                                    events. She helps students collaborate, explore their talents, and bring their
+                                    creative ideas to life. Her role fosters an engaging campus environment where
+                                    students can develop their confidence, teamwork, and leadership skills.”
+                                </p>
+                            </div>
+
+                            <!-- Clean Structured Information Items with Subtle Icons -->
+                            <div class="faculty-meta-grid">
+
+                                <div class="meta-card">
+                                    <div class="meta-icon-wrap" title="Employee ID">
+                                        <i data-lucide="badge-info" style="width:18px;height:18px;"></i>
+                                    </div>
+                                    <div class="meta-content">
+                                        <span class="meta-label">Employee ID</span>
+                                        <span class="meta-value">CSM010014</span>
+                                    </div>
+                                </div>
+
+                                <div class="meta-card">
+                                    <div class="meta-icon-wrap" title="Date of Joining">
+                                        <i data-lucide="calendar" style="width:18px;height:18px;"></i>
+                                    </div>
+                                    <div class="meta-content">
+                                        <span class="meta-label">Date of Joining</span>
+                                        <span class="meta-value">02-07-2004</span>
+                                    </div>
+                                </div>
+
+                                <div class="meta-card">
+                                    <div class="meta-icon-wrap" title="Qualification">
+                                        <i data-lucide="graduation-cap" style="width:18px;height:18px;"></i>
+                                    </div>
+                                    <div class="meta-content">
+                                        <span class="meta-label">Qualification</span>
+                                        <span class="meta-value">B.Tech, M.Tech, Ph.D</span>
+                                    </div>
+                                </div>
+
+                                <div class="meta-card">
+                                    <div class="meta-icon-wrap" title="Association">
+                                        <i data-lucide="briefcase" style="width:18px;height:18px;"></i>
+                                    </div>
+                                    <div class="meta-content">
+                                        <span class="meta-label">Association</span>
+                                        <span class="meta-value">Regular</span>
+                                    </div>
+                                </div>
+
+                                <div class="meta-card">
+                                    <div class="meta-icon-wrap" title="Contact Telephone">
+                                        <i data-lucide="phone" style="width:18px;height:18px;"></i>
+                                    </div>
+                                    <div class="meta-content">
+                                        <span class="meta-label">Contact</span>
+                                        <span class="meta-value">
+                                            <a href="tel:9849675275">9849675275</a>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="meta-card">
+                                    <div class="meta-icon-wrap" title="Official Email">
+                                        <i data-lucide="mail" style="width:18px;height:18px;"></i>
+                                    </div>
+                                    <div class="meta-content">
+                                        <span class="meta-label">Email</span>
+                                        <span class="meta-value">
+                                            <a
+                                                href="mailto:sirisha.j@pvpsiddhartha.ac.in">sirisha.j@pvpsiddhartha.ac.in</a>
+                                        </span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Actions Bar (View Profile points to verified PVPSIT faculty department page) -->
+                        <div class="coordinator-actions">
+                            <a href="https://www.pvpsiddhartha.ac.in/aiml_web/index.html" 
+                               target="_blank" 
+                               rel="noopener noreferrer" 
+                               class="btn-coordinator" 
+                               id="btn-view-profile">
+                                <i data-lucide="external-link" style="width:16px;height:16px;"></i>
+                                View Profile
+                            </a>
+                            <a href="mailto:sirisha.j@pvpsiddhartha.ac.in" class="btn-coordinator-secondary">
+                                <i data-lucide="send" style="width:16px;height:16px;"></i>
+                                Email Coordinator
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- SECTION 3: CLUBS (THE MAIN ATTRACTION)                    -->
+    <!-- All 6 Verified Clubs Preserved Exactly                    -->
+    <!-- ========================================================= -->
+    <section id="clubs" class="clubs-section" aria-labelledby="clubs-heading">
+        <div class="container">
+
+            <div class="clubs-header-wrap reveal-node">
+                <div>
+                    <span class="section-tag">STUDENT BODIES & FORUMS</span>
+                    <h2 id="clubs-heading" class="section-title">Explore Our Clubs</h2>
+                </div>
+                <p class="section-lead">
+                    Six specialized student organizations fostering technical excellence, creative expression,
+                    sportsmanship, and collaborative leadership.
+                </p>
+            </div>
+
+            <div class="clubs-grid">
+
+                <!-- 1. AI Club -->
+                <article class="club-card reveal-node delay-1">
+                    <div class="club-media">
+                        <img src="./images/AiCoding.jpeg" alt="AI Club at PVPSIT" class="club-media-img" loading="lazy">
+                        <span class="club-category-pill">Technology</span>
+                    </div>
+                    <div class="club-content">
+                        <h3 class="club-name">AI Club</h3>
+                        <p class="club-desc">Exploring the frontiers of artificial intelligence, machine learning
+                            architectures, and modern computational models through hands-on development.</p>
+                        <div class="club-footer">
+                            <a href="https://pvpsitclubs.github.io/AI-Club/" target="_blank" rel="noopener noreferrer"
+                                class="btn-club-visit">
+                                Visit Club
+                                <i data-lucide="arrow-up-right" style="width:15px;height:15px;"></i>
+                            </a>
+                            <span class="club-ext-indicator">External Site ↗</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 2. Coding Club -->
+                <article class="club-card reveal-node delay-2">
+                    <div class="club-media">
+                        <img src="./images/Coding.jpeg" alt="Coding Club at PVPSIT" class="club-media-img"
+                            loading="lazy">
+                        <span class="club-category-pill">Technology</span>
+                    </div>
+                    <div class="club-content">
+                        <h3 class="club-name">Coding Club</h3>
+                        <p class="club-desc">Building the future, one line of code at a time. Empowering students in
+                            algorithmic problem-solving, competitive programming, and engineering best practices.</p>
+                        <div class="club-footer">
+                            <a href="https://codingclubpvpsit.github.io/CodingClub/" target="_blank"
+                                rel="noopener noreferrer" class="btn-club-visit">
+                                Visit Club
+                                <i data-lucide="arrow-up-right" style="width:15px;height:15px;"></i>
+                            </a>
+                            <span class="club-ext-indicator">External Site ↗</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 3. Hackathon Club -->
+                <article class="club-card reveal-node delay-3">
+                    <div class="club-media">
+                        <img src="./images/hackthon.jpeg" alt="Hackathon Club at PVPSIT" class="club-media-img"
+                            loading="lazy">
+                        <span class="club-category-pill">Innovation</span>
+                    </div>
+                    <div class="club-content">
+                        <h3 class="club-name">Hackathon Club</h3>
+                        <p class="club-desc">Innovating under pressure and building great things. Driving 24-48 hour
+                            prototype sprints, hackathon bootcamps, and national competitions.</p>
+                        <div class="club-footer">
+                            <a href="https://pvp-csmcsd-hackathon-club.vercel.app/" target="_blank"
+                                rel="noopener noreferrer" class="btn-club-visit">
+                                Visit Club
+                                <i data-lucide="arrow-up-right" style="width:15px;height:15px;"></i>
+                            </a>
+                            <span class="club-ext-indicator">External Site ↗</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 4. Cultural Club -->
+                <article class="club-card reveal-node delay-1">
+                    <div class="club-media">
+                        <img src="./images/Cultural.jpeg" alt="Cultural Club at PVPSIT" class="club-media-img"
+                            loading="lazy">
+                        <span class="club-category-pill">Arts & Culture</span>
+                    </div>
+                    <div class="club-content">
+                        <h3 class="club-name">Cultural Club</h3>
+                        <p class="club-desc">Celebrating diversity and artistic expression through music, dramatic arts,
+                            dance showcases, stage performance, and college-wide festivals.</p>
+                        <div class="club-footer">
+                            <a href="https://cultural-club-one.vercel.app/" target="_blank" rel="noopener noreferrer"
+                                class="btn-club-visit">
+                                Visit Club
+                                <i data-lucide="arrow-up-right" style="width:15px;height:15px;"></i>
+                            </a>
+                            <span class="club-ext-indicator">External Site ↗</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 5. Creative Club -->
+                <article class="club-card reveal-node delay-2">
+                    <div class="club-media">
+                        <img src="./images/content.jpeg" alt="Creative Club at PVPSIT" class="club-media-img"
+                            loading="lazy">
+                        <span class="club-category-pill">Media & Design</span>
+                    </div>
+                    <div class="club-content">
+                        <h3 class="club-name">Creative Club</h3>
+                        <p class="club-desc">Telling stories through digital media, visual filmmaking, photography,
+                            graphic branding, UI/UX aesthetics, and creative content creation.</p>
+                        <div class="club-footer">
+                            <a href="https://creative-club-ten.vercel.app/" target="_blank" rel="noopener noreferrer"
+                                class="btn-club-visit">
+                                Visit Club
+                                <i data-lucide="arrow-up-right" style="width:15px;height:15px;"></i>
+                            </a>
+                            <span class="club-ext-indicator">External Site ↗</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 6. Sports Club -->
+                <article class="club-card reveal-node delay-3">
+                    <div class="club-media">
+                        <img src="./images/Sports.jpeg" alt="Sports Club at PVPSIT" class="club-media-img"
+                            loading="lazy">
+                        <span class="club-category-pill">Athletics</span>
+                    </div>
+                    <div class="club-content">
+                        <h3 class="club-name">Sports Club</h3>
+                        <p class="club-desc">Promoting teamwork, physical fitness, sportsmanship, and competitive
+                            athletic meets across indoor and outdoor collegiate tournaments.</p>
+                        <div class="club-footer">
+                            <a href="https://csmcsd-sportsclub.github.io/csmcsd-sportsclub/" target="_blank"
+                                rel="noopener noreferrer" class="btn-club-visit">
+                                Visit Club
+                                <i data-lucide="arrow-up-right" style="width:15px;height:15px;"></i>
+                            </a>
+                            <span class="club-ext-indicator">External Site ↗</span>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- FOOTER (MINIMAL & INSTITUTIONAL)                          -->
+    <!-- ========================================================= -->
+    <footer class="site-footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-grid">
+
+                <!-- Institutional Brand -->
+                <div>
+                    <h3 class="footer-brand-title">PVPSIT Student Clubs</h3>
+                    <p class="footer-brand-desc">
+                        Prasad V. Potluri Siddhartha Institute of Technology (Autonomous), Kanuru, Vijayawada.
+                        Department of Computer Science & Engineering (AI & ML) and Department of Computer Science &
+                        Engineering (Data Science).
+                    </p>
+                </div>
+
+                <!-- Verified Navigation -->
+                <div>
+                    <h4 class="footer-col-title">Navigation</h4>
+                    <ul class="footer-nav-list">
+                        <li><a href="#home"><i data-lucide="chevron-right" style="width:14px;height:14px;"></i> Home</a>
+                        </li>
+                        <li><a href="#coordinator"><i data-lucide="chevron-right" style="width:14px;height:14px;"></i>
+                                Coordinator</a></li>
+                        <li><a href="#clubs"><i data-lucide="chevron-right" style="width:14px;height:14px;"></i>
+                                Clubs</a></li>
+                    </ul>
+                </div>
+
+                <!-- Institutional Portals -->
+                <div>
+                    <h4 class="footer-col-title">College Links</h4>
+                    <ul class="footer-nav-list">
+                        <li><a href="https://www.pvpsiddhartha.ac.in/" target="_blank" rel="noopener noreferrer">PVPSIT
+                                Home Portal ↗</a></li>
+                        <li><a href="https://www.pvpsiddhartha.ac.in/aiml_web/index.html" target="_blank"
+                                rel="noopener noreferrer">CSM Department Page ↗</a></li>
+                        <li><a href="https://www.pvpsiddhartha.ac.in/ds_web/index.html" target="_blank"
+                                rel="noopener noreferrer">CSD Department Page ↗</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2026 Prasad V. Potluri Siddhartha Institute of Technology. All rights reserved.</p>
+                <p>Designed for PVPSIT Clubs (CSD & CSM) · Guided by Faculty Mentorship</p>
+            </div>
         </div>
     </footer>
 
-<script>
-    // Loading Animation
-    window.addEventListener('load', () => {
-        document.body.classList.add('loaded');
-    });
+    <!-- ========================================================= -->
+    <!-- JAVASCRIPT: THEME SYSTEM, NAVIGATION & SCROLL OBSERVER    -->
+    <!-- ========================================================= -->
+    <script>
+        // 1. Initialize Lucide Icons
+        function refreshIcons() {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }
+        refreshIcons();
 
-    // Advanced 3D Coverflow Carousel JavaScript
-    const items = document.querySelectorAll('.coverflow-item');
-    const dotsContainer = document.getElementById('dots');
-    const currentTitle = document.getElementById('current-title');
-    const currentDescription = document.getElementById('current-description');
-    const container = document.querySelector('.coverflow-container');
-    let currentIndex = Math.floor(items.length / 2);
-    let isAnimating = false;
+        // 2. Premium Light / Dark Theme System
+        const THEME_KEY = 'pvpsit-theme';
+        const desktopThemeBtn = document.getElementById('theme-toggle-desktop');
+        const mobileHeaderThemeBtn = document.getElementById('theme-toggle-mobile-header');
+        const drawerThemeBtn = document.getElementById('theme-toggle-drawer');
+        const themeStatusText = document.getElementById('theme-status-text');
 
-    const imageData = [
-        { title: "AI Club", description: "Exploring the frontiers of artificial intelligence" },
-        { title: "Coding Club", description: "Building the future, one line of code at a time" },
-        { title: "Content Creation", description: "Telling stories through digital media" },
-        { title: "Cultural Club", description: "Celebrating diversity and artistic expression" },
-        { title: "Hackathon Club", description: "Innovating under pressure and building great things" },
-        { title: "Sports Club", description: "Promoting teamwork and physical excellence" }
-    ];
+        function getCurrentTheme() {
+            return document.documentElement.getAttribute('data-theme') || 'light';
+        }
 
-    // Create dots for carousel
-    items.forEach((_, index) => {
-        const dot = document.createElement('div');
-        dot.className = 'dot';
-        dot.onclick = () => goToIndex(index);
-        dotsContainer.appendChild(dot);
-    });
+        function updateThemeUI(theme) {
+            const isDark = theme === 'dark';
+            const iconName = isDark ? 'sun' : 'moon';
+            const labelText = isDark ? 'Switch to light mode' : 'Switch to dark mode';
+            const statusLabel = isDark ? 'Appearance: Dark Mode' : 'Appearance: Light Mode';
 
-    const dots = document.querySelectorAll('.dot');
-    let autoplayInterval = null;
-    let isPlaying = true;
-    const playIcon = document.querySelector('.play-icon');
-    const pauseIcon = document.querySelector('.pause-icon');
-
-    function updateCoverflow() {
-        if (isAnimating) return;
-        isAnimating = true;
-
-        items.forEach((item, index) => {
-            let offset = index - currentIndex;
-            if (offset > items.length / 2) offset -= items.length;
-            else if (offset < -items.length / 2) offset += items.length;
-            
-            const absOffset = Math.abs(offset);
-            const sign = Math.sign(offset);
-            
-            let translateX = offset * 220;
-            let translateZ = -absOffset * 200;
-            let rotateY = -sign * Math.min(absOffset * 45, 45);
-            let opacity = 1 - (absOffset * 0.3);
-            let scale = 1 - (absOffset * 0.15);
-
-            if (absOffset > 2) {
-                opacity = 0;
-                translateX = sign * 600;
+            // Update Desktop Button
+            if (desktopThemeBtn) {
+                desktopThemeBtn.setAttribute('aria-label', labelText);
+                desktopThemeBtn.setAttribute('title', labelText);
+                desktopThemeBtn.innerHTML = `<i data-lucide="${iconName}"></i>`;
             }
 
-            item.style.transform = `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`;
-            item.style.opacity = opacity;
-            item.style.zIndex = 100 - absOffset;
-            item.classList.toggle('active', index === currentIndex);
-        });
+            // Update Mobile Header Button
+            if (mobileHeaderThemeBtn) {
+                mobileHeaderThemeBtn.setAttribute('aria-label', labelText);
+                mobileHeaderThemeBtn.setAttribute('title', labelText);
+                mobileHeaderThemeBtn.innerHTML = `<i data-lucide="${iconName}"></i>`;
+            }
 
-        dots.forEach((dot, index) => dot.classList.toggle('active', index === currentIndex));
+            // Update Drawer Button & Label
+            if (drawerThemeBtn) {
+                drawerThemeBtn.setAttribute('aria-label', labelText);
+                drawerThemeBtn.innerHTML = `<i data-lucide="${iconName}"></i>`;
+            }
+            if (themeStatusText) {
+                themeStatusText.textContent = statusLabel;
+            }
 
-        const currentData = imageData[currentIndex];
-        currentTitle.style.animation = 'none';
-        currentDescription.style.animation = 'none';
-        
-        requestAnimationFrame(() => {
-            currentTitle.textContent = currentData.title;
-            currentDescription.textContent = currentData.description;
-            currentTitle.style.animation = 'fadeIn 0.6s forwards';
-            currentDescription.style.animation = 'fadeIn 0.6s forwards 0.2s';
-        });
-
-        setTimeout(() => isAnimating = false, 600);
-    }
-
-    function navigate(direction) {
-        if (isAnimating) return;
-        currentIndex = (currentIndex + direction + items.length) % items.length;
-        updateCoverflow();
-    }
-
-    function goToIndex(index) {
-        if (isAnimating || index === currentIndex) return;
-        currentIndex = index;
-        updateCoverflow();
-    }
-
-    // Keyboard navigation
-    container.addEventListener('keydown', e => {
-        if (e.key === 'ArrowLeft') navigate(-1);
-        if (e.key === 'ArrowRight') navigate(1);
-    });
-
-    // Touch/swipe functionality
-    let touchStartX = 0;
-    container.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
-    container.addEventListener('touchend', e => {
-        const touchEndX = e.changedTouches[0].screenX;
-        const diffX = touchStartX - touchEndX;
-        if (Math.abs(diffX) > 50) {
-            handleUserInteraction();
-            navigate(diffX > 0 ? 1 : -1);
+            refreshIcons();
         }
-    }, { passive: true });
 
-    // Reflection effects
-    items.forEach(item => {
-        const img = item.querySelector('img');
-        const reflection = item.querySelector('.reflection');
-        const gradient = 'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 1) 100%)';
-        
-        const applyReflection = () => {
-            reflection.style.background = `${gradient}, url(${img.src})`;
-            reflection.style.backgroundSize = 'cover';
-            reflection.style.backgroundPosition = 'center';
-        };
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            try {
+                localStorage.setItem(THEME_KEY, theme);
+            } catch (e) {
+                // Handle private browsing or localStorage disabled
+            }
+            updateThemeUI(theme);
+        }
 
-        if (img.complete) {
-            applyReflection();
+        function toggleTheme() {
+            const current = getCurrentTheme();
+            const next = current === 'dark' ? 'light' : 'dark';
+            setTheme(next);
+        }
+
+        // Attach Click Listeners
+        if (desktopThemeBtn) desktopThemeBtn.addEventListener('click', toggleTheme);
+        if (mobileHeaderThemeBtn) mobileHeaderThemeBtn.addEventListener('click', toggleTheme);
+        if (drawerThemeBtn) drawerThemeBtn.addEventListener('click', toggleTheme);
+
+        // Listen for OS Theme Changes if no user preference was saved
+        if (window.matchMedia) {
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+                if (!localStorage.getItem(THEME_KEY)) {
+                    setTheme(e.matches ? 'dark' : 'light');
+                }
+            });
+        }
+
+        // Initial UI Sync
+        updateThemeUI(getCurrentTheme());
+
+        // 3. Mobile Menu Toggle
+        const mobileToggleBtn = document.getElementById('mobile-toggle');
+        const mobileDrawer = document.getElementById('mobile-drawer');
+        const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+
+        if (mobileToggleBtn && mobileDrawer) {
+            mobileToggleBtn.addEventListener('click', () => {
+                const isOpen = mobileDrawer.classList.toggle('open');
+                mobileToggleBtn.setAttribute('aria-expanded', isOpen);
+            });
+
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileDrawer.classList.remove('open');
+                    mobileToggleBtn.setAttribute('aria-expanded', 'false');
+                });
+            });
+        }
+
+        // 4. Smooth Scrolling with Offset for Sticky Header
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const targetId = this.getAttribute('href');
+                if (targetId && targetId !== '#') {
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        e.preventDefault();
+                        const headerOffset = 70;
+                        const elementPosition = targetElement.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+
+        // 5. Scroll Reveal via IntersectionObserver
+        const revealElements = document.querySelectorAll('.reveal-node');
+        if ('IntersectionObserver' in window) {
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in-view');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.12,
+                rootMargin: '0px 0px -40px 0px'
+            });
+
+            revealElements.forEach(el => revealObserver.observe(el));
         } else {
-            img.onload = applyReflection;
+            revealElements.forEach(el => el.classList.add('in-view'));
         }
-    });
 
-    // Autoplay functionality
-    function startAutoplay() {
-        stopAutoplay();
-        autoplayInterval = setInterval(() => navigate(1), 4000);
-        isPlaying = true;
-        playIcon.style.display = 'none';
-        pauseIcon.style.display = 'block';
-    }
+        // 6. Active Section Indicator for Navigation
+        const sections = [
+            document.getElementById('home'),
+            document.getElementById('coordinator'),
+            document.getElementById('clubs')
+        ].filter(Boolean);
 
-    function stopAutoplay() {
-        clearInterval(autoplayInterval);
-        autoplayInterval = null;
-        isPlaying = false;
-        playIcon.style.display = 'block';
-        pauseIcon.style.display = 'none';
-    }
+        const desktopNavLinks = document.querySelectorAll('#desktop-menu .nav-link');
+        const mobileNavLinks = document.querySelectorAll('#mobile-drawer .mobile-nav-link');
 
-    function toggleAutoplay() {
-        if (isPlaying) stopAutoplay();
-        else startAutoplay();
-    }
+        function updateActiveNav() {
+            const scrollPosition = window.scrollY + 120;
 
-    function handleUserInteraction() { if (isPlaying) stopAutoplay(); }
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                const sectionId = section.getAttribute('id');
 
-    // --- Carousel Initialisation ---
-    // Override HTML onclick to include user interaction handling
-    document.querySelector('.nav-button.prev').onclick = () => { handleUserInteraction(); navigate(-1); };
-    document.querySelector('.nav-button.next').onclick = () => { handleUserInteraction(); navigate(1); };
-    items.forEach((item, index) => item.addEventListener('click', () => { 
-        if (index !== currentIndex) {
-            handleUserInteraction();
-            goToIndex(index);
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    desktopNavLinks.forEach(link => {
+                        if (link.getAttribute('data-section') === sectionId) {
+                            link.classList.add('active');
+                        } else {
+                            link.classList.remove('active');
+                        }
+                    });
+
+                    mobileNavLinks.forEach(link => {
+                        if (link.getAttribute('data-section') === sectionId) {
+                            link.classList.add('active');
+                        } else {
+                            link.classList.remove('active');
+                        }
+                    });
+                }
+            });
         }
-    }));
-    dots.forEach((dot, index) => dot.onclick = () => {
-        handleUserInteraction();
-        goToIndex(index);
-    });
 
-    // Initial setup
-    updateCoverflow();
-    startAutoplay();
-</script>
-
-<!-- ============================ -->
-<!-- ===== FIX ADDED HERE ===== -->
-<!-- ============================ -->
-<script>
-    // Mobile Menu Toggle
-    const mobileMenuButton = document.getElementById('mobile-menu-button');
-    const mobileMenu = document.getElementById('mobile-menu');
-
-    mobileMenuButton.addEventListener('click', () => {
-        mobileMenu.classList.toggle('active');
-    });
-</script>
-
+        window.addEventListener('scroll', updateActiveNav, { passive: true });
+        updateActiveNav();
+    </script>
 </body>
+
 </html>
