@@ -10,7 +10,7 @@
 
     <!-- Inline script to prevent theme flash before render -->
     <script>
-        (function() {
+        (function () {
             var savedTheme = localStorage.getItem('pvpsit-theme');
             if (savedTheme) {
                 document.documentElement.setAttribute('data-theme', savedTheme);
@@ -703,7 +703,7 @@
         }
 
         /* ========================================================= */
-        /* 2. COORDINATOR SECTION (FACULTY PROFILE)                 */
+        /* 2. COORDINATOR SECTION (DUAL LEADERSHIP & COORDINATOR)   */
         /* ========================================================= */
         .coordinator-section {
             padding: 7.5rem 0;
@@ -712,14 +712,51 @@
             transition: var(--theme-transition);
         }
 
-        .coordinator-wrapper {
+        .coordinator-section-header {
+            text-align: center;
+            max-width: 780px;
+            margin: 0 auto 3.5rem;
+        }
+
+        .coordinator-dual-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 2.25rem;
+            align-items: stretch;
+        }
+
+        .coordinator-card {
             background: var(--bg-coordinator-card);
-            border-radius: 16px;
+            border-radius: 18px;
             border: 1px solid var(--card-border);
             box-shadow: var(--shadow-card);
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
             position: relative;
-            transition: var(--theme-transition);
+            transition: transform var(--duration) var(--ease-out), box-shadow var(--duration) var(--ease-out), border-color var(--duration) var(--ease-out), var(--theme-transition);
+        }
+
+        .coordinator-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--gold-border);
+        }
+
+        /* ── Leadership-card special variant (HOD & Faculty Coordinator) ── */
+        .coordinator-card--leadership {
+            border: 1px solid rgba(217, 164, 65, 0.30);
+            box-shadow: var(--shadow-card), 0 0 0 0 rgba(217, 164, 65, 0);
+            transition: transform var(--duration) var(--ease-out),
+                        box-shadow var(--duration) var(--ease-out),
+                        border-color var(--duration) var(--ease-out),
+                        var(--theme-transition);
+        }
+
+        .coordinator-card--leadership:hover {
+            transform: translateY(-5px);
+            border-color: rgba(217, 164, 65, 0.65);
+            box-shadow: var(--shadow-hover), 0 0 22px rgba(217, 164, 65, 0.18);
         }
 
         .coordinator-top-accent {
@@ -727,49 +764,78 @@
             background: linear-gradient(90deg, #102A50 0%, var(--royal-blue) 60%, var(--elegant-gold) 100%);
         }
 
-        .coordinator-grid {
-            display: grid;
-            grid-template-columns: 380px 1fr;
-            align-items: stretch;
+        /* Stronger top accent gradient for leadership cards */
+        .coordinator-card--leadership .coordinator-top-accent {
+            height: 5px;
+            background: linear-gradient(90deg, var(--royal-blue) 0%, var(--elegant-gold) 55%, #f0c060 100%);
+            box-shadow: 0 1px 8px rgba(217, 164, 65, 0.35);
         }
 
-        /* Left: Faculty Portrait Column */
-        .coordinator-portrait-col {
+        /* ── Leadership role label with vertical gold bar ── */
+        .leadership-role-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            margin-bottom: 0.55rem;
+        }
+
+        .leadership-role-bar {
+            width: 3.5px;
+            height: 1.15em;
+            border-radius: 2px;
+            background: linear-gradient(180deg, var(--elegant-gold) 0%, #b8860b 100%);
+            flex-shrink: 0;
+            box-shadow: 0 0 6px rgba(217, 164, 65, 0.4);
+        }
+
+        .leadership-role-text {
+            font-size: 0.76rem;
+            font-weight: 800;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--elegant-gold);
+            line-height: 1;
+        }
+
+        [data-theme="light"] .leadership-role-text {
+            color: #a07820;
+        }
+
+        .coordinator-card-header {
             background: var(--coordinator-portrait-col);
-            padding: 3.5rem 2.5rem;
+            padding: 3rem 2rem 2.5rem;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             text-align: center;
             position: relative;
             color: #ffffff;
             transition: var(--theme-transition);
         }
 
-        .coordinator-portrait-col::before {
+        .coordinator-card-header::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at center, rgba(217, 164, 65, 0.14) 0%, transparent 70%);
+            background: radial-gradient(circle at center 40%, rgba(217, 164, 65, 0.15) 0%, transparent 72%);
             pointer-events: none;
         }
 
         .portrait-frame {
             position: relative;
-            width: 220px;
-            height: 220px;
+            width: 170px;
+            height: 170px;
             border-radius: 50%;
-            padding: 6px;
+            padding: 5px;
             background: linear-gradient(135deg, var(--elegant-gold) 0%, rgba(217, 164, 65, 0.3) 100%);
-            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.38);
-            margin-bottom: 1.5rem;
+            box-shadow: 0 14px 32px rgba(0, 0, 0, 0.35);
+            margin-bottom: 1.35rem;
             transition: transform var(--duration) var(--ease-out), box-shadow var(--duration) var(--ease-out);
         }
 
-        .coordinator-wrapper:hover .portrait-frame {
-            transform: scale(1.02);
-            box-shadow: 0 20px 42px rgba(217, 164, 65, 0.35);
+        .coordinator-card:hover .portrait-frame {
+            transform: scale(1.03);
+            box-shadow: 0 18px 38px rgba(217, 164, 65, 0.38);
         }
 
         .faculty-portrait-img {
@@ -791,14 +857,14 @@
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(217, 164, 65, 0.4);
             color: var(--elegant-gold);
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             font-weight: 700;
             letter-spacing: 0.06em;
             text-transform: uppercase;
         }
 
         .faculty-affiliation {
-            margin-top: 1rem;
+            margin-top: 0.75rem;
             font-size: 0.82rem;
             color: #a4b7d1;
             display: flex;
@@ -806,27 +872,28 @@
             gap: 0.45rem;
         }
 
-        /* Right: Faculty Information Column */
-        .coordinator-info-col {
-            padding: 3.75rem 4rem;
+        /* Profile Body */
+        .coordinator-card-body {
+            padding: 2.25rem 2.25rem 2rem;
             display: flex;
             flex-direction: column;
+            flex-grow: 1;
             justify-content: space-between;
             color: var(--coordinator-text-main);
             transition: var(--theme-transition);
         }
 
         .faculty-header {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.35rem;
         }
 
         .faculty-eyebrow {
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             font-weight: 700;
             letter-spacing: 0.12em;
             text-transform: uppercase;
             color: var(--royal-blue);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.45rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -847,21 +914,35 @@
 
         .faculty-name {
             font-family: var(--font-display);
-            font-size: 2.6rem;
+            font-size: 2.15rem;
             font-weight: 600;
             color: var(--coordinator-heading);
-            line-height: 1.15;
+            line-height: 1.2;
             margin-bottom: 0.35rem;
             transition: var(--theme-transition);
         }
 
+        /* Larger, heavier name for leadership-card variant */
+        .coordinator-card--leadership .faculty-name {
+            font-size: 2.35rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        /* Enhanced designation in leadership cards */
+        .coordinator-card--leadership .faculty-designation {
+            font-size: 1.06rem;
+            font-weight: 700;
+        }
+
         .faculty-designation {
-            font-size: 1.1rem;
+            font-size: 1.02rem;
             font-weight: 600;
             color: var(--royal-blue);
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            flex-wrap: wrap;
             transition: var(--theme-transition);
         }
 
@@ -869,19 +950,19 @@
             color: #82a8ec;
         }
 
-        /* Professional Introduction */
+        /* Professional Introduction Box */
         .faculty-intro-box {
             background: var(--coordinator-intro-bg);
             border-left: 3px solid var(--elegant-gold);
-            padding: 1.25rem 1.5rem;
+            padding: 1.15rem 1.35rem;
             border-radius: 0 10px 10px 0;
-            margin-bottom: 2rem;
+            margin-bottom: 1.75rem;
             transition: var(--theme-transition);
         }
 
         .faculty-intro-text {
-            font-size: 0.98rem;
-            line-height: 1.7;
+            font-size: 0.94rem;
+            line-height: 1.68;
             color: var(--coordinator-intro-text);
             font-style: normal;
             transition: var(--theme-transition);
@@ -891,18 +972,18 @@
         .faculty-meta-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 1.15rem;
-            margin-bottom: 2rem;
+            gap: 1rem;
+            margin-bottom: 1.75rem;
         }
 
         .meta-card {
             background: var(--meta-card-bg);
             border: 1px solid var(--meta-card-border);
             border-radius: 10px;
-            padding: 0.9rem 1.15rem;
+            padding: 0.85rem 1rem;
             display: flex;
             align-items: flex-start;
-            gap: 0.85rem;
+            gap: 0.8rem;
             transition: all var(--duration) var(--ease-out), var(--theme-transition);
         }
 
@@ -929,6 +1010,7 @@
         .meta-content {
             display: flex;
             flex-direction: column;
+            min-width: 0;
             overflow: hidden;
         }
 
@@ -943,10 +1025,11 @@
         }
 
         .meta-value {
-            font-size: 0.92rem;
+            font-size: 0.9rem;
             font-weight: 600;
             color: var(--meta-value);
             word-break: break-word;
+            overflow-wrap: anywhere;
             transition: var(--theme-transition);
         }
 
@@ -969,8 +1052,8 @@
         .coordinator-actions {
             display: flex;
             align-items: center;
-            gap: 1.25rem;
-            padding-top: 1.5rem;
+            gap: 1rem;
+            padding-top: 1.35rem;
             border-top: 1px solid var(--border-subtle);
             flex-wrap: wrap;
             transition: var(--theme-transition);
@@ -979,9 +1062,9 @@
         .btn-coordinator {
             background: #102A50;
             color: #ffffff;
-            padding: 0.8rem 1.6rem;
+            padding: 0.75rem 1.4rem;
             border-radius: 8px;
-            font-size: 0.92rem;
+            font-size: 0.9rem;
             font-weight: 700;
             display: inline-flex;
             align-items: center;
@@ -1009,9 +1092,9 @@
             background: transparent;
             color: var(--btn-sec-text);
             border: 1px solid var(--btn-sec-border);
-            padding: 0.8rem 1.4rem;
+            padding: 0.75rem 1.25rem;
             border-radius: 8px;
-            font-size: 0.92rem;
+            font-size: 0.9rem;
             font-weight: 600;
             display: inline-flex;
             align-items: center;
@@ -1274,10 +1357,21 @@
             transform: translateY(0);
         }
 
-        .delay-1 { transition-delay: 0.1s; }
-        .delay-2 { transition-delay: 0.2s; }
-        .delay-3 { transition-delay: 0.3s; }
-        .delay-4 { transition-delay: 0.4s; }
+        .delay-1 {
+            transition-delay: 0.1s;
+        }
+
+        .delay-2 {
+            transition-delay: 0.2s;
+        }
+
+        .delay-3 {
+            transition-delay: 0.3s;
+        }
+
+        .delay-4 {
+            transition-delay: 0.4s;
+        }
 
         @media (prefers-reduced-motion: reduce) {
             * {
@@ -1306,12 +1400,13 @@
                 font-size: 3.4rem;
             }
 
-            .coordinator-grid {
-                grid-template-columns: 320px 1fr;
+            .coordinator-dual-grid {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
             }
 
-            .coordinator-info-col {
-                padding: 3rem 2.5rem;
+            .coordinator-card-body {
+                padding: 2rem 2rem 1.75rem;
             }
 
             .clubs-grid {
@@ -1324,6 +1419,7 @@
         }
 
         @media (max-width: 768px) {
+
             .nav-menu,
             .nav-portals {
                 display: none;
@@ -1349,20 +1445,30 @@
                 font-size: 2.3rem;
             }
 
-            .coordinator-grid {
-                grid-template-columns: 1fr;
+            .coordinator-card-header {
+                padding: 2.5rem 1.5rem 2rem;
             }
 
-            .coordinator-portrait-col {
-                padding: 3rem 1.5rem 2rem;
+            .portrait-frame {
+                width: 150px;
+                height: 150px;
             }
 
-            .coordinator-info-col {
-                padding: 2.5rem 1.5rem;
+            .coordinator-card-body {
+                padding: 1.75rem 1.25rem 1.5rem;
+            }
+
+            .faculty-name {
+                font-size: 1.85rem;
+            }
+
+            .coordinator-card--leadership .faculty-name {
+                font-size: 2rem;
             }
 
             .faculty-meta-grid {
                 grid-template-columns: 1fr;
+                gap: 0.85rem;
             }
 
             .clubs-grid {
@@ -1437,17 +1543,20 @@
                 </a>
 
                 <!-- Desktop Theme Toggle Button -->
-                <button class="theme-toggle-btn" id="theme-toggle-desktop" aria-label="Switch to dark mode" title="Switch theme">
+                <button class="theme-toggle-btn" id="theme-toggle-desktop" aria-label="Switch to dark mode"
+                    title="Switch theme">
                     <i data-lucide="moon" id="theme-icon-desktop"></i>
                 </button>
             </div>
 
             <!-- Mobile Controls Group (Toggle + Hamburger) -->
             <div style="display:flex;align-items:center;gap:0.5rem;" class="mobile-controls-group">
-                <button class="theme-toggle-btn mobile-theme-btn" id="theme-toggle-mobile-header" aria-label="Switch theme" style="display:none;">
+                <button class="theme-toggle-btn mobile-theme-btn" id="theme-toggle-mobile-header"
+                    aria-label="Switch theme" style="display:none;">
                     <i data-lucide="moon" id="theme-icon-mobile-header"></i>
                 </button>
-                <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+                <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation menu"
+                    aria-expanded="false">
                     <i data-lucide="menu" id="toggle-icon" style="width:24px;height:24px;"></i>
                 </button>
             </div>
@@ -1552,76 +1661,174 @@
     </section>
 
     <!-- ========================================================= -->
-    <!-- SECTION 2: COORDINATOR (FACULTY PROFILE)                  -->
+    <!-- SECTION 2: LEADERSHIP & COORDINATION PROFILES             -->
+    <!-- Unified Section: HOD & Faculty Coordinator                -->
     <!-- ========================================================= -->
     <section id="coordinator" class="coordinator-section" aria-labelledby="coordinator-heading">
         <div class="container">
 
-            <div class="coordinator-wrapper reveal-node">
-                <div class="coordinator-top-accent"></div>
-                <div class="coordinator-grid">
+            <!-- Cohesive Section Header -->
+            <div class="coordinator-section-header reveal-node">
+                <span class="faculty-eyebrow" style="justify-content: center; margin-bottom: 0.6rem;">LEADERSHIP &amp;
+                    COORDINATION</span>
+                <h2 id="coordinator-heading" class="section-title" style="margin-bottom: 0.85rem;">Guiding Student
+                    Excellence</h2>
+                <p class="section-subtitle" style="margin: 0 auto; max-width: 640px;">
+                    Fostering a dynamic academic ecosystem and empowering student leadership across all club activities
+                    within the CSD &amp; CSM departments.
+                </p>
+            </div>
 
-                    <!-- Portrait Column -->
-                    <div class="coordinator-portrait-col">
+            <!-- Balanced Dual Profile Grid -->
+            <div class="coordinator-dual-grid">
+
+                <!-- Left Profile: Dr. B. Janakiramaiah (HOD) -->
+                <div class="coordinator-card coordinator-card--leadership reveal-node delay-1">
+                    <div class="coordinator-top-accent"></div>
+                    <div class="coordinator-card-header">
                         <div class="portrait-frame">
-                            <img src="./images/faculty_portrait.jpg"
-                                alt="Dr. J. Sirisha - Faculty Coordinator, PVPSIT Clubs" class="faculty-portrait-img"
-                                loading="lazy" width="220" height="220">
+                            <img src="./images/HOD.jpg" alt="Dr. B. Janakiramaiah - Professor & Head, PVPSIT"
+                                class="faculty-portrait-img" loading="lazy" width="170" height="170">
                         </div>
-                        <span class="faculty-badge">Faculty Coordinator</span>
+                        <span class="faculty-badge">Academic Leadership</span>
                         <div class="faculty-affiliation">
-                            <i data-lucide="clock" style="width:14px;height:14px;"></i>
-                            22+ Years at PVPSIT
+                            <i data-lucide="building" style="width:14px;height:14px;"></i>
+                            Department of CSD &amp; CSM
                         </div>
                     </div>
 
-                    <!-- Details Column -->
-                    <div class="coordinator-info-col">
+                    <div class="coordinator-card-body">
                         <div>
                             <div class="faculty-header">
-                                <span class="faculty-eyebrow">FACULTY COORDINATOR</span>
-                                <h2 id="coordinator-heading" class="faculty-name">Dr. J. Sirisha</h2>
+                                <div class="leadership-role-label">
+                                    <span class="leadership-role-bar"></span>
+                                    <span class="leadership-role-text">Head of the Department</span>
+                                </div>
+                                <h3 class="faculty-name">Dr. B. Janakiramaiah</h3>
                                 <div class="faculty-designation">
                                     <i data-lucide="award"
                                         style="width:18px;height:18px;color:var(--elegant-gold);"></i>
-                                    Associate Professor, Department of CSD & CSM
+                                    Professor &amp; Head
                                 </div>
                             </div>
 
-                            <!-- Professionally Written Editable Introduction -->
+                            <!-- Professional Description (Editable) -->
                             <div class="faculty-intro-box">
                                 <p class="faculty-intro-text">
-                                    “Dr. J. Sirisha, Associate Professor at PVPSIT, serves as the faculty coordinator
-                                    for the college clubs, guiding and supporting student-led cultural activities and
-                                    events. She helps students collaborate, explore their talents, and bring their
-                                    creative ideas to life. Her role fosters an engaging campus environment where
-                                    students can develop their confidence, teamwork, and leadership skills.”
+                                    "Dr. B. Janakiramaiah serves as Professor &amp; Head, providing academic leadership
+                                    and supporting the development of the CSD &amp; CSM departments. His leadership
+                                    helps foster an environment that encourages academic excellence, collaboration, and
+                                    student growth."
                                 </p>
                             </div>
 
-                            <!-- Clean Structured Information Items with Subtle Icons -->
+                            <!-- 4 Specified Information Fields Only -->
                             <div class="faculty-meta-grid">
-
                                 <div class="meta-card">
-                                    <div class="meta-icon-wrap" title="Employee ID">
-                                        <i data-lucide="badge-info" style="width:18px;height:18px;"></i>
+                                    <div class="meta-icon-wrap" title="Qualification">
+                                        <i data-lucide="graduation-cap" style="width:18px;height:18px;"></i>
                                     </div>
                                     <div class="meta-content">
-                                        <span class="meta-label">Employee ID</span>
-                                        <span class="meta-value">CSM010014</span>
+                                        <span class="meta-label">Qualification</span>
+                                        <span class="meta-value">B.E. (CSE), M.Tech (CSE), Ph.D (CSE)</span>
                                     </div>
                                 </div>
 
                                 <div class="meta-card">
-                                    <div class="meta-icon-wrap" title="Date of Joining">
-                                        <i data-lucide="calendar" style="width:18px;height:18px;"></i>
+                                    <div class="meta-icon-wrap" title="Association">
+                                        <i data-lucide="briefcase" style="width:18px;height:18px;"></i>
                                     </div>
                                     <div class="meta-content">
-                                        <span class="meta-label">Date of Joining</span>
-                                        <span class="meta-value">02-07-2004</span>
+                                        <span class="meta-label">Association</span>
+                                        <span class="meta-value">Regular</span>
                                     </div>
                                 </div>
 
+                                <div class="meta-card">
+                                    <div class="meta-icon-wrap" title="Contact Telephone">
+                                        <i data-lucide="phone" style="width:18px;height:18px;"></i>
+                                    </div>
+                                    <div class="meta-content">
+                                        <span class="meta-label">Contact</span>
+                                        <span class="meta-value">
+                                            <a href="tel:9440586340">9440586340</a>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="meta-card">
+                                    <div class="meta-icon-wrap" title="Official Email">
+                                        <i data-lucide="mail" style="width:18px;height:18px;"></i>
+                                    </div>
+                                    <div class="meta-content">
+                                        <span class="meta-label">Email</span>
+                                        <span class="meta-value">
+                                            <a
+                                                href="mailto:Janakiramaiah@pvpsiddhartha.ac.in">Janakiramaiah@pvpsiddhartha.ac.in</a>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Actions Bar -->
+                        <div class="coordinator-actions">
+                            <a href="https://www.pvpsiddhartha.ac.in/aiml_web/index.html" target="_blank"
+                                rel="noopener noreferrer" class="btn-coordinator" id="btn-view-hod-profile">
+                                <i data-lucide="external-link" style="width:16px;height:16px;"></i>
+                                View Profile
+                            </a>
+                            <a href="mailto:Janakiramaiah@pvpsiddhartha.ac.in" class="btn-coordinator-secondary">
+                                <i data-lucide="send" style="width:16px;height:16px;"></i>
+                                Email HOD
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Profile: Dr. J. Sirisha (Faculty Coordinator) -->
+                <div class="coordinator-card coordinator-card--leadership reveal-node delay-2">
+                    <div class="coordinator-top-accent"></div>
+                    <div class="coordinator-card-header">
+                        <div class="portrait-frame">
+                            <img src="./images/faculty_portrait.jpg"
+                                alt="Dr. J. Sirisha - Faculty Coordinator, PVPSIT Clubs" class="faculty-portrait-img"
+                                loading="lazy" width="170" height="170">
+                        </div>
+                        <span class="faculty-badge">Club Coordination</span>
+                        <div class="faculty-affiliation">
+                            <i data-lucide="users" style="width:14px;height:14px;"></i>
+                            Department of CSD &amp; CSM
+                        </div>
+                    </div>
+
+                    <div class="coordinator-card-body">
+                        <div>
+                            <div class="faculty-header">
+                                <div class="leadership-role-label">
+                                    <span class="leadership-role-bar"></span>
+                                    <span class="leadership-role-text">Faculty Coordinator</span>
+                                </div>
+                                <h3 class="faculty-name">Dr. J. Sirisha</h3>
+                                <div class="faculty-designation">
+                                    <i data-lucide="award"
+                                        style="width:18px;height:18px;color:var(--elegant-gold);"></i>
+                                    Associate Professor, Department of CSD &amp; CSM
+                                </div>
+                            </div>
+
+                            <!-- Professional Introduction (Editable) -->
+                            <div class="faculty-intro-box">
+                                <p class="faculty-intro-text">
+                                    "Dr. J. Sirisha serves as the faculty coordinator for the clubs and student
+                                    activities at PVPSIT, guiding students in organizing events and bringing their
+                                    creative ideas to life. She encourages participation, teamwork, and leadership while
+                                    helping create a vibrant and engaging campus experience."
+                                </p>
+                            </div>
+
+                            <!-- 4 Specified Information Fields Only -->
+                            <div class="faculty-meta-grid">
                                 <div class="meta-card">
                                     <div class="meta-icon-wrap" title="Qualification">
                                         <i data-lucide="graduation-cap" style="width:18px;height:18px;"></i>
@@ -1666,17 +1873,13 @@
                                         </span>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
 
-                        <!-- Actions Bar (View Profile points to verified PVPSIT faculty department page) -->
+                        <!-- Actions Bar -->
                         <div class="coordinator-actions">
-                            <a href="https://www.pvpsiddhartha.ac.in/aiml_web/index.html" 
-                               target="_blank" 
-                               rel="noopener noreferrer" 
-                               class="btn-coordinator" 
-                               id="btn-view-profile">
+                            <a href="https://www.pvpsiddhartha.ac.in/aiml_web/index.html" target="_blank"
+                                rel="noopener noreferrer" class="btn-coordinator" id="btn-view-profile">
                                 <i data-lucide="external-link" style="width:16px;height:16px;"></i>
                                 View Profile
                             </a>
@@ -1685,9 +1888,9 @@
                                 Email Coordinator
                             </a>
                         </div>
-
                     </div>
                 </div>
+
             </div>
 
         </div>
@@ -1768,8 +1971,8 @@
                         <p class="club-desc">Innovating under pressure and building great things. Driving 24-48 hour
                             prototype sprints, hackathon bootcamps, and national competitions.</p>
                         <div class="club-footer">
-                            <a href="https://pvp-csmcsd-hackathon-club.vercel.app/" target="_blank"
-                                rel="noopener noreferrer" class="btn-club-visit">
+                            <a href="https://ideahackathon-web.vercel.app/" target="_blank" rel="noopener noreferrer"
+                                class="btn-club-visit">
                                 Visit Club
                                 <i data-lucide="arrow-up-right" style="width:15px;height:15px;"></i>
                             </a>
